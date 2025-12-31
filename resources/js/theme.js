@@ -42,9 +42,16 @@ document.addEventListener('DOMContentLoaded', function () {
       } else {
         layout_change(savedTheme);
       }
+    } else {
+      // If no saved theme, check current body attribute and update icon
+      var currentTheme = document.getElementsByTagName('body')[0].getAttribute('data-pc-theme') || 'light';
+      updateThemeToggleIcon(currentTheme);
     }
   } else {
     console.warn('Web Storage API is not supported in this browser.');
+    // Update icon based on current body attribute
+    var currentTheme = document.getElementsByTagName('body')[0].getAttribute('data-pc-theme') || 'light';
+    updateThemeToggleIcon(currentTheme);
   }
 });
 
@@ -247,6 +254,9 @@ function layout_change(layout, skipSave) {
 
     // Update active button state for dark theme
     updateActiveButton('.theme-layout .btn[data-value="false"]');
+    
+    // Update theme toggle icon in header
+    updateThemeToggleIcon('dark');
   } else {
     dark_flag = false;
 
@@ -258,6 +268,28 @@ function layout_change(layout, skipSave) {
 
     // Update active button state for light theme
     updateActiveButton('.theme-layout .btn[data-value="true"]');
+    
+    // Update theme toggle icon in header
+    updateThemeToggleIcon('light');
+  }
+}
+
+// Function to toggle between dark and light theme
+function toggleTheme() {
+  var currentTheme = document.getElementsByTagName('body')[0].getAttribute('data-pc-theme');
+  var newTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+  layout_change(newTheme);
+}
+
+// Function to update the theme toggle icon in the header
+function updateThemeToggleIcon(theme) {
+  var iconElement = document.querySelector('#theme-toggle-icon use');
+  if (iconElement) {
+    if (theme === 'dark') {
+      iconElement.setAttribute('xlink:href', '#custom-sun-1');
+    } else {
+      iconElement.setAttribute('xlink:href', '#custom-moon');
+    }
   }
 }
 

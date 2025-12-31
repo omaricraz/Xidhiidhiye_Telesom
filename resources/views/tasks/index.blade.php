@@ -96,7 +96,7 @@
             </div>
           @elseif(Auth::user()->isEmployee() || Auth::user()->isIntern())
             {{-- Normal users (Employee and Intern) ONLY see "My Task" widget --}}
-            <div class="col-xl-6 col-md-12">
+            <div class="col-12">
               <div class="card">
                 <div class="card-body pb-0">
                   <div class="d-flex align-items-center justify-content-between">
