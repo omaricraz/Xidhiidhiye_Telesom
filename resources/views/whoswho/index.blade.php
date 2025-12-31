@@ -8,7 +8,7 @@
 
 @section('content')
 
-<x-breadcrumb item="Who's Who" active="Team Members"/>
+<x-breadcrumb item="Team Structure" active="Team Members"/>
 
         <!-- [ Main Content ] start -->
         <div class="row">
@@ -29,7 +29,7 @@
                 <div class="col-md-6 col-lg-4 col-xl-3">
                   <div class="card h-100 shadow-sm">
                     <!-- Profile Image Section -->
-                    <div class="card-body text-center pb-2" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 0.375rem 0.375rem 0 0;">
+                    <div class="card-body text-center pb-2 profile-card-gradient" style="border-radius: 0.375rem 0.375rem 0 0;">
                       <div class="position-relative d-inline-block">
                         <img src="{{ $member->getProfileImageUrl() }}" 
                              alt="{{ $member->full_name ?? $member->name }}" 
@@ -117,7 +117,7 @@
                 <div class="col-md-6 col-lg-4 col-xl-3">
                   <div class="card h-100 shadow-sm">
                     <!-- Profile Image Section -->
-                    <div class="card-body text-center pb-2" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 0.375rem 0.375rem 0 0;">
+                    <div class="card-body text-center pb-2 profile-card-gradient" style="border-radius: 0.375rem 0.375rem 0 0;">
                       <div class="position-relative d-inline-block">
                         <img src="{{ $member->getProfileImageUrl() }}" 
                              alt="{{ $member->full_name ?? $member->name }}" 

@@ -1,6 +1,3 @@
-<li class="pc-item pc-caption">
-  <label data-i18n="Navigation">Navigation</label>
-</li>
 @auth
 @if(Auth::user()->role === 'Manager')
 <li class="pc-item">
@@ -31,7 +28,7 @@
         <use xlink:href="#custom-user-square"></use>
       </svg>
     </span>
-    <span class="pc-mtext" data-i18n="Who's Who">Who's Who</span>
+    <span class="pc-mtext" data-i18n="Team Structure">Team Structure</span>
   </a>
 </li>
 <li class="pc-item">
@@ -41,7 +38,7 @@
         <use xlink:href="#custom-status-up"></use>
       </svg>
     </span>
-    <span class="pc-mtext" data-i18n="Onboarding">Onboarding</span>
+    <span class="pc-mtext" data-i18n="Learning Goals">Learning Goals</span>
   </a>
 </li>
 <li class="pc-item">

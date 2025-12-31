@@ -4,7 +4,7 @@
 
 @section('content')
 
-<x-breadcrumb item="Onboarding" active="Create Learning Goal"/>
+<x-breadcrumb item="Learning Goals" active="Create Learning Goal"/>
 
         <!-- [ Main Content ] start -->
         <div class="row">
