@@ -65,10 +65,19 @@ class TaskController extends Controller
                   ->orWhere('creator_id', $user->id);
             })->latest()->paginate(15);
             // For normal users, get their tasks for the "My Task" widget
+            // Order by status: Pending first, then In_Progress, then Completed
+            // Within each status, order by most recent first
             $userTasks = Task::with(['creator', 'assignee'])->where(function($q) use ($user) {
                 $q->where('assignee_id', $user->id)
                   ->orWhere('creator_id', $user->id);
-            })->latest()->get();
+            })->orderByRaw("CASE 
+                WHEN status = 'Pending' THEN 1 
+                WHEN status = 'In_Progress' THEN 2 
+                WHEN status = 'Completed' THEN 3 
+                ELSE 4 
+            END")
+            ->orderBy('created_at', 'desc')
+            ->get();
             return view('tasks.index', compact('tasks', 'userTasks'));
         } else {
             // Employee sees their own tasks
@@ -77,10 +86,19 @@ class TaskController extends Controller
                   ->orWhere('creator_id', $user->id);
             })->latest()->paginate(15);
             // For normal users, get their tasks for the "My Task" widget
+            // Order by status: Pending first, then In_Progress, then Completed
+            // Within each status, order by most recent first
             $userTasks = Task::with(['creator', 'assignee'])->where(function($q) use ($user) {
                 $q->where('assignee_id', $user->id)
                   ->orWhere('creator_id', $user->id);
-            })->latest()->get();
+            })->orderByRaw("CASE 
+                WHEN status = 'Pending' THEN 1 
+                WHEN status = 'In_Progress' THEN 2 
+                WHEN status = 'Completed' THEN 3 
+                ELSE 4 
+            END")
+            ->orderBy('created_at', 'desc')
+            ->get();
             return view('tasks.index', compact('tasks', 'userTasks'));
         }
 
@@ -93,7 +111,18 @@ class TaskController extends Controller
     public function create()
     {
         Gate::authorize('create', Task::class);
-        $users = User::where('id', '!=', Auth::id())->get();
+        $user = Auth::user();
+        
+        // If user is a team lead, only show their team members
+        if ($user->isTeamLead() && $user->team_id) {
+            $users = User::where('team_id', $user->team_id)
+                ->where('id', '!=', $user->id)
+                ->get();
+        } else {
+            // Managers and others see all users
+            $users = User::where('id', '!=', Auth::id())->get();
+        }
+        
         return view('tasks.create', compact('users'));
     }
 
@@ -109,12 +138,21 @@ class TaskController extends Controller
             'description' => 'nullable|string',
             'priority' => 'required|in:High,Medium,Normal',
             'status' => 'required|in:Pending,In_Progress,Completed',
-            'is_private' => 'boolean',
             'assignee_id' => 'nullable|exists:users,id',
         ]);
 
+        // If user is a team lead, ensure assignee is from their team
+        $user = Auth::user();
+        if ($user->isTeamLead() && $user->team_id && $request->assignee_id) {
+            $assignee = User::find($request->assignee_id);
+            if (!$assignee || $assignee->team_id !== $user->team_id) {
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['assignee_id' => 'You can only assign tasks to members of your team.']);
+            }
+        }
+
         $validated['creator_id'] = Auth::id();
-        $validated['is_private'] = $request->has('is_private');
 
         Task::create($validated);
 
@@ -137,7 +175,18 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         Gate::authorize('update', $task);
-        $users = User::where('id', '!=', Auth::id())->get();
+        $user = Auth::user();
+        
+        // If user is a team lead, only show their team members
+        if ($user->isTeamLead() && $user->team_id) {
+            $users = User::where('team_id', $user->team_id)
+                ->where('id', '!=', $user->id)
+                ->get();
+        } else {
+            // Managers and others see all users
+            $users = User::where('id', '!=', Auth::id())->get();
+        }
+        
         return view('tasks.edit', compact('task', 'users'));
     }
 
@@ -153,15 +202,23 @@ class TaskController extends Controller
             'description' => 'nullable|string',
             'priority' => 'required|in:High,Medium,Normal',
             'status' => 'required|in:Pending,In_Progress,Completed',
-            'is_private' => 'boolean',
             'assignee_id' => 'nullable|exists:users,id',
         ]);
 
+        // If user is a team lead, ensure assignee is from their team
+        $user = Auth::user();
+        if ($user->isTeamLead() && $user->team_id && $request->assignee_id) {
+            $assignee = User::find($request->assignee_id);
+            if (!$assignee || $assignee->team_id !== $user->team_id) {
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['assignee_id' => 'You can only assign tasks to members of your team.']);
+            }
+        }
+
         // Interns can only update status
-        if (Auth::user()->isIntern()) {
+        if ($user->isIntern()) {
             $validated = ['status' => $validated['status']];
-        } else {
-            $validated['is_private'] = $request->has('is_private');
         }
 
         $task->update($validated);

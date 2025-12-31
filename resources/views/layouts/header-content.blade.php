@@ -127,21 +127,9 @@
             </div>
           </div>
           <hr class="border-secondary border-opacity-50" />
-          <a href="#!" class="dropdown-item">
+          <a href="{{ route('profile.show') }}" class="dropdown-item">
             <i class="ti ti-user"></i>
             <span>My Account</span>
-          </a>
-          <a href="#!" class="dropdown-item">
-            <i class="ti ti-settings"></i>
-            <span>Settings</span>
-          </a>
-          <a href="#!" class="dropdown-item">
-            <i class="ti ti-headset"></i>
-            <span>Support</span>
-          </a>
-          <a href="#!" class="dropdown-item">
-            <i class="ti ti-lock"></i>
-            <span>Lock Screen</span>
           </a>
           <hr class="border-secondary border-opacity-50" />
           <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form-profile').submit();">

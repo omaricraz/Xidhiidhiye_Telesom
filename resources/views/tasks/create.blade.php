@@ -75,12 +75,6 @@
                         @enderror
                       </div>
                     </div>
-                    <div class="col-md-12">
-                      <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" name="is_private" id="is_private" {{ old('is_private') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="is_private">Private Task</label>
-                      </div>
-                    </div>
                   </div>
                   <div class="text-end">
                     <a href="{{ route('tasks.index') }}" class="btn btn-secondary">Cancel</a>

@@ -28,6 +28,7 @@ class User extends Authenticatable
         'tech_stack',
         'status_emoji',
         'profile_image',
+        'status',
     ];
 
     /**
@@ -131,5 +132,64 @@ class User extends Authenticatable
     public function isEmployee(): bool
     {
         return $this->role === 'Employee';
+    }
+
+    /**
+     * Get status icon class based on user status.
+     */
+    public function getStatusIcon(): string
+    {
+        return match($this->status ?? 'active') {
+            'active' => 'ti-circle-check',
+            'holiday' => 'ti-plane',
+            'sick_leave' => 'ti-heart',
+            'remote' => 'ti-home',
+            'offline' => 'ti-circle-off',
+            default => 'ti-circle-check',
+        };
+    }
+
+    /**
+     * Get status badge color based on user status.
+     */
+    public function getStatusBadgeColor(): string
+    {
+        return match($this->status ?? 'active') {
+            'active' => 'success',
+            'holiday' => 'info',
+            'sick_leave' => 'warning',
+            'remote' => 'primary',
+            'offline' => 'secondary',
+            default => 'success',
+        };
+    }
+
+    /**
+     * Get status label for display.
+     */
+    public function getStatusLabel(): string
+    {
+        return match($this->status ?? 'active') {
+            'active' => 'Active',
+            'holiday' => 'On Holiday',
+            'sick_leave' => 'Sick Leave',
+            'remote' => 'Remote',
+            'offline' => 'Offline',
+            default => 'Active',
+        };
+    }
+
+    /**
+     * Get profile image URL or fallback to default avatar.
+     */
+    public function getProfileImageUrl(): string
+    {
+        if ($this->profile_image) {
+            return $this->profile_image;
+        }
+        
+        // Fallback to default avatar based on user ID
+        $avatarNumber = (($this->id - 1) % 10) + 1;
+        return "/build/images/user/avatar-{$avatarNumber}.jpg";
     }
 }

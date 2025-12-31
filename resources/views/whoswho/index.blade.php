@@ -27,44 +27,58 @@
               <div class="row g-3">
                 @foreach($teamMembers as $member)
                 <div class="col-md-6 col-lg-4 col-xl-3">
-                  <div class="card h-100">
-                    <div class="card-body">
-                      <div class="d-flex align-items-center mb-3">
-                        <div class="flex-shrink-0">
-                          @if($member->profile_image)
-                            <img src="{{ $member->profile_image }}" alt="{{ $member->full_name ?? $member->name }}" class="avtar avtar-m rounded-circle" style="object-fit: cover; width: 100%; height: 100%;" />
-                          @else
-                            <span class="avtar avtar-m rounded-circle bg-light-primary">
-                              {{ $member->status_emoji ?? '👤' }}
-                            </span>
-                          @endif
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                          <h6 class="card-title mb-0">{{ $member->full_name ?? $member->name }}</h6>
-                          <p class="text-muted f-12 mb-0">{{ $member->email }}</p>
-                        </div>
+                  <div class="card h-100 shadow-sm">
+                    <!-- Profile Image Section -->
+                    <div class="card-body text-center pb-2" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 0.375rem 0.375rem 0 0;">
+                      <div class="position-relative d-inline-block">
+                        <img src="{{ $member->getProfileImageUrl() }}" 
+                             alt="{{ $member->full_name ?? $member->name }}" 
+                             class="rounded-circle border border-4 border-white shadow" 
+                             style="width: 100px; height: 100px; object-fit: cover;" />
+                        <!-- Status Indicator Badge -->
+                        <span class="position-absolute bottom-0 end-0 badge rounded-pill border border-2 border-white d-flex align-items-center justify-content-center bg-{{ $member->getStatusBadgeColor() }}" 
+                              style="width: 32px; height: 32px;">
+                          <i class="ti {{ $member->getStatusIcon() }} text-white" style="font-size: 14px;"></i>
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <!-- Card Content -->
+                    <div class="card-body pt-3">
+                      <div class="text-center mb-3">
+                        <h6 class="card-title mb-1 fw-semibold">{{ $member->full_name ?? $member->name }}</h6>
+                        <p class="text-muted f-12 mb-2">{{ $member->email }}</p>
+                        
+                        <!-- Status Badge -->
+                        <span class="badge bg-light-{{ $member->getStatusBadgeColor() }} text-{{ $member->getStatusBadgeColor() }} rounded-pill px-3 py-1 mb-2">
+                          <i class="ti {{ $member->getStatusIcon() }} me-1"></i>
+                          {{ $member->getStatusLabel() }}
+                        </span>
                       </div>
                       
+                      <hr class="my-3">
+                      
                       <div class="mb-2">
-                        <small class="text-muted d-block mb-1">Role</small>
+                        <small class="text-muted d-block mb-1">
+                          <i class="ti ti-briefcase me-1"></i>Role
+                        </small>
                         <span class="badge bg-light-{{ $member->role === 'Manager' ? 'danger' : ($member->role === 'Team_Lead' ? 'warning' : 'primary') }}">
                           {{ $member->role }}
                         </span>
                       </div>
                       
                       <div class="mb-2">
-                        <small class="text-muted d-block mb-1">Team</small>
+                        <small class="text-muted d-block mb-1">
+                          <i class="ti ti-users me-1"></i>Team
+                        </small>
                         <p class="mb-0 f-14">{{ $member->team->name ?? 'N/A' }}</p>
                       </div>
                       
-                      <div class="mb-2">
-                        <small class="text-muted d-block mb-1">Status</small>
-                        <span class="badge bg-light-success rounded-pill f-12">Active</span>
-                      </div>
-                      
                       @if($member->tech_stack)
-                      <div>
-                        <small class="text-muted d-block mb-1">Tech Stack</small>
+                      <div class="mb-2">
+                        <small class="text-muted d-block mb-1">
+                          <i class="ti ti-code me-1"></i>Tech Stack
+                        </small>
                         <div class="d-flex flex-wrap gap-1">
                           @foreach(explode(',', $member->tech_stack) as $tech)
                             <span class="badge bg-light-secondary">{{ trim($tech) }}</span>
@@ -73,8 +87,16 @@
                       </div>
                       @endif
                     </div>
-                    <div class="card-footer bg-transparent border-top-0">
-                      <small class="text-muted">ID: #{{ $member->id }}</small>
+                    
+                    <div class="card-footer bg-transparent border-top-0 pt-0">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                          <i class="ti ti-id me-1"></i>ID: #{{ $member->id }}
+                        </small>
+                        @if($member->status_emoji)
+                        <span style="font-size: 18px;">{{ $member->status_emoji }}</span>
+                        @endif
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -93,44 +115,58 @@
               <div class="row g-3">
                 @foreach($otherMembers as $member)
                 <div class="col-md-6 col-lg-4 col-xl-3">
-                  <div class="card h-100">
-                    <div class="card-body">
-                      <div class="d-flex align-items-center mb-3">
-                        <div class="flex-shrink-0">
-                          @if($member->profile_image)
-                            <img src="{{ $member->profile_image }}" alt="{{ $member->full_name ?? $member->name }}" class="avtar avtar-m rounded-circle" style="object-fit: cover; width: 100%; height: 100%;" />
-                          @else
-                            <span class="avtar avtar-m rounded-circle bg-light-primary">
-                              {{ $member->status_emoji ?? '👤' }}
-                            </span>
-                          @endif
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                          <h6 class="card-title mb-0">{{ $member->full_name ?? $member->name }}</h6>
-                          <p class="text-muted f-12 mb-0">{{ $member->email }}</p>
-                        </div>
+                  <div class="card h-100 shadow-sm">
+                    <!-- Profile Image Section -->
+                    <div class="card-body text-center pb-2" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 0.375rem 0.375rem 0 0;">
+                      <div class="position-relative d-inline-block">
+                        <img src="{{ $member->getProfileImageUrl() }}" 
+                             alt="{{ $member->full_name ?? $member->name }}" 
+                             class="rounded-circle border border-4 border-white shadow" 
+                             style="width: 100px; height: 100px; object-fit: cover;" />
+                        <!-- Status Indicator Badge -->
+                        <span class="position-absolute bottom-0 end-0 badge rounded-pill border border-2 border-white d-flex align-items-center justify-content-center bg-{{ $member->getStatusBadgeColor() }}" 
+                              style="width: 32px; height: 32px;">
+                          <i class="ti {{ $member->getStatusIcon() }} text-white" style="font-size: 14px;"></i>
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <!-- Card Content -->
+                    <div class="card-body pt-3">
+                      <div class="text-center mb-3">
+                        <h6 class="card-title mb-1 fw-semibold">{{ $member->full_name ?? $member->name }}</h6>
+                        <p class="text-muted f-12 mb-2">{{ $member->email }}</p>
+                        
+                        <!-- Status Badge -->
+                        <span class="badge bg-light-{{ $member->getStatusBadgeColor() }} text-{{ $member->getStatusBadgeColor() }} rounded-pill px-3 py-1 mb-2">
+                          <i class="ti {{ $member->getStatusIcon() }} me-1"></i>
+                          {{ $member->getStatusLabel() }}
+                        </span>
                       </div>
                       
+                      <hr class="my-3">
+                      
                       <div class="mb-2">
-                        <small class="text-muted d-block mb-1">Role</small>
+                        <small class="text-muted d-block mb-1">
+                          <i class="ti ti-briefcase me-1"></i>Role
+                        </small>
                         <span class="badge bg-light-{{ $member->role === 'Manager' ? 'danger' : ($member->role === 'Team_Lead' ? 'warning' : 'primary') }}">
                           {{ $member->role }}
                         </span>
                       </div>
                       
                       <div class="mb-2">
-                        <small class="text-muted d-block mb-1">Team</small>
+                        <small class="text-muted d-block mb-1">
+                          <i class="ti ti-users me-1"></i>Team
+                        </small>
                         <p class="mb-0 f-14">{{ $member->team->name ?? 'N/A' }}</p>
                       </div>
                       
-                      <div class="mb-2">
-                        <small class="text-muted d-block mb-1">Status</small>
-                        <span class="badge bg-light-success rounded-pill f-12">Active</span>
-                      </div>
-                      
                       @if($member->tech_stack)
-                      <div>
-                        <small class="text-muted d-block mb-1">Tech Stack</small>
+                      <div class="mb-2">
+                        <small class="text-muted d-block mb-1">
+                          <i class="ti ti-code me-1"></i>Tech Stack
+                        </small>
                         <div class="d-flex flex-wrap gap-1">
                           @foreach(explode(',', $member->tech_stack) as $tech)
                             <span class="badge bg-light-secondary">{{ trim($tech) }}</span>
@@ -139,8 +175,16 @@
                       </div>
                       @endif
                     </div>
-                    <div class="card-footer bg-transparent border-top-0">
-                      <small class="text-muted">ID: #{{ $member->id }}</small>
+                    
+                    <div class="card-footer bg-transparent border-top-0 pt-0">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                          <i class="ti ti-id me-1"></i>ID: #{{ $member->id }}
+                        </small>
+                        @if($member->status_emoji)
+                        <span style="font-size: 18px;">{{ $member->status_emoji }}</span>
+                        @endif
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -157,4 +201,3 @@
 @section('scripts')
     <!-- No scripts needed for card groups -->
 @endsection
-

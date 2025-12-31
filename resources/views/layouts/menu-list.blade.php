@@ -15,7 +15,7 @@
 </li>
 @endif
 <li class="pc-item">
-  <a href="{{ route('tasks.index') }}" class="pc-link">
+  <a href="{{ Auth::user()->isTeamLead() ? route('lead.tasks.index') : route('tasks.index') }}" class="pc-link">
     <span class="pc-micon">
       <svg class="pc-icon">
         <use xlink:href="#custom-document"></use>

@@ -16,10 +16,10 @@ use Illuminate\Support\Facades\File;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Get a random profile image from local storage
+     * Get all profile images from local storage
      * First checks public/images/profiles/, then falls back to public/build/images/user/
      */
-    private function getRandomProfileImage(): ?string
+    private function getProfileImages(): array
     {
         $profilesDir = public_path('images/profiles');
         $userDir = public_path('build/images/user');
@@ -48,8 +48,19 @@ class DatabaseSeeder extends Seeder
             }
         }
         
-        // Return a random image or null if none found
-        return !empty($images) ? $images[array_rand($images)] : null;
+        return $images;
+    }
+
+    /**
+     * Get a profile image by index (cycles through available images)
+     */
+    private function getProfileImageByIndex(int $index): ?string
+    {
+        $images = $this->getProfileImages();
+        if (empty($images)) {
+            return null;
+        }
+        return $images[$index % count($images)];
     }
 
     /**
@@ -80,12 +91,16 @@ class DatabaseSeeder extends Seeder
                 'team_id' => null,
                 'tech_stack' => 'Laravel, PHP, MySQL, JavaScript, Vue.js',
                 'status_emoji' => '👔',
-                'profile_image' => $this->getRandomProfileImage(),
+                'profile_image' => $this->getProfileImageByIndex(0),
+                'status' => 'active',
             ]
         );
-        // Update profile image if it doesn't exist
-        if (!$manager->profile_image) {
-            $manager->update(['profile_image' => $this->getRandomProfileImage()]);
+        // Update profile image and status if they don't exist
+        if (!$manager->profile_image || !$manager->status) {
+            $manager->update([
+                'profile_image' => $this->getProfileImageByIndex(0) ?? $manager->profile_image,
+                'status' => 'active',
+            ]);
         }
 
         // Update teams with lead_id
@@ -104,12 +119,16 @@ class DatabaseSeeder extends Seeder
                 'team_id' => $devTeam->id,
                 'tech_stack' => 'Laravel, PHP, React, TypeScript',
                 'status_emoji' => '🚀',
-                'profile_image' => $this->getRandomProfileImage(),
+                'profile_image' => $this->getProfileImageByIndex(1),
+                'status' => 'remote',
             ]
         );
-        // Update profile image if it doesn't exist
-        if (!$devLead->profile_image) {
-            $devLead->update(['profile_image' => $this->fetchProfileImage()]);
+        // Update profile image and status if they don't exist
+        if (!$devLead->profile_image || !$devLead->status) {
+            $devLead->update([
+                'profile_image' => $this->getProfileImageByIndex(1) ?? $devLead->profile_image,
+                'status' => 'remote',
+            ]);
         }
 
         $devOpsLead = User::firstOrCreate(
@@ -123,12 +142,16 @@ class DatabaseSeeder extends Seeder
                 'team_id' => $devOpsTeam->id,
                 'tech_stack' => 'Docker, Kubernetes, AWS, Terraform',
                 'status_emoji' => '⚙️',
-                'profile_image' => $this->getRandomProfileImage(),
+                'profile_image' => $this->getProfileImageByIndex(2),
+                'status' => 'active',
             ]
         );
-        // Update profile image if it doesn't exist
-        if (!$devOpsLead->profile_image) {
-            $devOpsLead->update(['profile_image' => $this->fetchProfileImage()]);
+        // Update profile image and status if they don't exist
+        if (!$devOpsLead->profile_image || !$devOpsLead->status) {
+            $devOpsLead->update([
+                'profile_image' => $this->getProfileImageByIndex(2) ?? $devOpsLead->profile_image,
+                'status' => 'active',
+            ]);
         }
 
         // Create 2 Interns per team
@@ -143,12 +166,16 @@ class DatabaseSeeder extends Seeder
                 'team_id' => $devTeam->id,
                 'tech_stack' => 'PHP, JavaScript',
                 'status_emoji' => '🌱',
-                'profile_image' => $this->getRandomProfileImage(),
+                'profile_image' => $this->getProfileImageByIndex(3),
+                'status' => 'active',
             ]
         );
-        // Update profile image if it doesn't exist
-        if (!$devIntern1->profile_image) {
-            $devIntern1->update(['profile_image' => $this->fetchProfileImage()]);
+        // Update profile image and status if they don't exist
+        if (!$devIntern1->profile_image || !$devIntern1->status) {
+            $devIntern1->update([
+                'profile_image' => $this->getProfileImageByIndex(3) ?? $devIntern1->profile_image,
+                'status' => 'active',
+            ]);
         }
 
         $devIntern2 = User::firstOrCreate(
@@ -162,12 +189,16 @@ class DatabaseSeeder extends Seeder
                 'team_id' => $devTeam->id,
                 'tech_stack' => 'HTML, CSS, JavaScript',
                 'status_emoji' => '🌱',
-                'profile_image' => $this->getRandomProfileImage(),
+                'profile_image' => $this->getProfileImageByIndex(4),
+                'status' => 'holiday',
             ]
         );
-        // Update profile image if it doesn't exist
-        if (!$devIntern2->profile_image) {
-            $devIntern2->update(['profile_image' => $this->fetchProfileImage()]);
+        // Update profile image and status if they don't exist
+        if (!$devIntern2->profile_image || !$devIntern2->status) {
+            $devIntern2->update([
+                'profile_image' => $this->getProfileImageByIndex(4) ?? $devIntern2->profile_image,
+                'status' => 'holiday',
+            ]);
         }
 
         $devOpsIntern1 = User::firstOrCreate(
@@ -181,12 +212,16 @@ class DatabaseSeeder extends Seeder
                 'team_id' => $devOpsTeam->id,
                 'tech_stack' => 'Linux, Bash, Docker',
                 'status_emoji' => '🌱',
-                'profile_image' => $this->getRandomProfileImage(),
+                'profile_image' => $this->getProfileImageByIndex(5),
+                'status' => 'sick_leave',
             ]
         );
-        // Update profile image if it doesn't exist
-        if (!$devOpsIntern1->profile_image) {
-            $devOpsIntern1->update(['profile_image' => $this->fetchProfileImage()]);
+        // Update profile image and status if they don't exist
+        if (!$devOpsIntern1->profile_image || !$devOpsIntern1->status) {
+            $devOpsIntern1->update([
+                'profile_image' => $this->getProfileImageByIndex(5) ?? $devOpsIntern1->profile_image,
+                'status' => 'sick_leave',
+            ]);
         }
 
         $devOpsIntern2 = User::firstOrCreate(
@@ -200,12 +235,16 @@ class DatabaseSeeder extends Seeder
                 'team_id' => $devOpsTeam->id,
                 'tech_stack' => 'Python, Docker, Git',
                 'status_emoji' => '🌱',
-                'profile_image' => $this->getRandomProfileImage(),
+                'profile_image' => $this->getProfileImageByIndex(0), // Cycle back if more users than images
+                'status' => 'remote',
             ]
         );
-        // Update profile image if it doesn't exist
-        if (!$devOpsIntern2->profile_image) {
-            $devOpsIntern2->update(['profile_image' => $this->fetchProfileImage()]);
+        // Update profile image and status if they don't exist
+        if (!$devOpsIntern2->profile_image || !$devOpsIntern2->status) {
+            $devOpsIntern2->update([
+                'profile_image' => $this->getProfileImageByIndex(0) ?? $devOpsIntern2->profile_image,
+                'status' => 'remote',
+            ]);
         }
 
         // Create 3 Learning Goals per team

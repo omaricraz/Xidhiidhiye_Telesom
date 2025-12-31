@@ -62,9 +62,9 @@ class LearningGoalPolicy
      */
     public function update(User $user, LearningGoal $learningGoal): bool
     {
-        // Only managers can update learning goals for all teams
+        // Manager and Team Lead can update learning goals for all teams
         if ($learningGoal->team_id === null) {
-            return $user->isManager();
+            return $user->isManager() || $user->isTeamLead();
         }
 
         // Manager can update all
@@ -85,9 +85,9 @@ class LearningGoalPolicy
      */
     public function delete(User $user, LearningGoal $learningGoal): bool
     {
-        // Only managers can delete learning goals for all teams
+        // Manager and Team Lead can delete learning goals for all teams
         if ($learningGoal->team_id === null) {
-            return $user->isManager();
+            return $user->isManager() || $user->isTeamLead();
         }
 
         // Manager can delete all

@@ -43,9 +43,9 @@
                           <div class="d-flex align-items-center">
                             <div class="flex-shrink-0">
                               @if($user->profile_image)
-                                <img src="{{ $user->profile_image }}" alt="{{ $user->full_name ?? $user->name }}" class="avtar avtar-s rounded-circle" style="object-fit: cover; width: 100%; height: 100%;" />
+                                <img src="{{ $user->profile_image }}" alt="{{ $user->full_name ?? $user->name }}" class="avtar avtar-xs rounded-circle" style="object-fit: cover;" />
                               @else
-                                <span class="avtar avtar-s rounded-circle bg-light-primary">
+                                <span class="avtar avtar-xs rounded-circle bg-light-primary">
                                   {{ $user->status_emoji ?? '👤' }}
                                 </span>
                               @endif

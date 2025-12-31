@@ -48,8 +48,15 @@
                           </div>
                         </div>
                         @can('update', $goal)
-                        <div>
+                        <div class="d-flex gap-2">
                           <a href="{{ route('onboarding.edit', $goal) }}" class="btn btn-sm btn-primary">Edit</a>
+                          @can('delete', $goal)
+                          <form action="{{ route('onboarding.destroy', $goal) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this learning goal?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                          </form>
+                          @endcan
                         </div>
                         @endcan
                       </div>

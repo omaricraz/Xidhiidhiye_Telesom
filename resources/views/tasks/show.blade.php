@@ -32,13 +32,6 @@
                   <div class="col-md-6">
                     <p><strong>Creator:</strong> {{ $task->creator->name }}</p>
                     <p><strong>Assignee:</strong> {{ $task->assignee->name ?? 'Unassigned' }}</p>
-                    <p><strong>Private:</strong> 
-                      @if($task->is_private)
-                        <span class="badge bg-light-danger">Yes</span>
-                      @else
-                        <span class="badge bg-light-success">No</span>
-                      @endif
-                    </p>
                     <p><strong>Created:</strong> {{ $task->created_at->format('Y-m-d H:i') }}</p>
                   </div>
                 </div>

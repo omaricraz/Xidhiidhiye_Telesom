@@ -36,7 +36,6 @@
                           <th>Status</th>
                           <th>Creator</th>
                           <th>Assignee</th>
-                          <th>Private</th>
                           <th class="text-center">Actions</th>
                         </tr>
                       </thead>
@@ -57,13 +56,6 @@
                           </td>
                           <td>{{ $task->creator->name }}</td>
                           <td>{{ $task->assignee->name ?? 'Unassigned' }}</td>
-                          <td>
-                            @if($task->is_private)
-                              <span class="badge bg-light-danger">Private</span>
-                            @else
-                              <span class="badge bg-light-success">Public</span>
-                            @endif
-                          </td>
                           <td class="text-center">
                             <ul class="list-inline me-auto mb-0">
                               <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="View">

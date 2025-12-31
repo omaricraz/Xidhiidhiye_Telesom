@@ -352,16 +352,78 @@ window.addEventListener('load', function () {
 // Function to mark active menu items based on current page URL
 var elem = document.querySelectorAll('.pc-sidebar .pc-navbar a');
 for (var l = 0; l < elem.length; l++) {
-  // Check if current URL matches menu item URL
+  var menuLink = elem[l];
+  var menuHref = menuLink.getAttribute('href');
+  
+  // Skip if href is empty or starts with #
+  if (!menuHref || menuHref === '' || menuHref.startsWith('#')) {
+    continue;
+  }
+  
+  // Get current page URL without query string and hash
   var pageUrl = window.location.href.split(/[?#]/)[0];
-  if (elem[l].href == pageUrl && elem[l].getAttribute('href') != '') {
+  var menuUrl = menuLink.href.split(/[?#]/)[0];
+  
+  // Get pathnames for comparison
+  var pagePath = new URL(pageUrl).pathname;
+  var menuPath = new URL(menuUrl).pathname;
+  
+  // Normalize paths (remove trailing slashes except for root)
+  pagePath = pagePath.replace(/\/$/, '') || '/';
+  menuPath = menuPath.replace(/\/$/, '') || '/';
+  
+  // Check for exact match or if current path matches menu path
+  var isMatch = false;
+  
+  // Exact match
+  if (pageUrl === menuUrl || pagePath === menuPath) {
+    isMatch = true;
+  }
+  // Current path starts with menu path (e.g., /tasks/1 matches /tasks)
+  else if (menuPath !== '/' && pagePath.startsWith(menuPath + '/')) {
+    isMatch = true;
+  }
+  // Current path contains menu path as a complete segment (e.g., /lead/tasks matches /tasks)
+  else if (menuPath !== '/') {
+    var menuSegments = menuPath.split('/').filter(function(p) { return p !== ''; });
+    var pageSegments = pagePath.split('/').filter(function(p) { return p !== ''; });
+    
+    // Check if all menu segments appear consecutively in the page path
+    if (menuSegments.length > 0) {
+      for (var i = 0; i <= pageSegments.length - menuSegments.length; i++) {
+        var match = true;
+        for (var j = 0; j < menuSegments.length; j++) {
+          if (pageSegments[i + j] !== menuSegments[j]) {
+            match = false;
+            break;
+          }
+        }
+        if (match) {
+          isMatch = true;
+          break;
+        }
+      }
+    }
+  }
+  
+  if (isMatch) {
     // Add active class to matching menu item and its parent elements
-    elem[l].parentNode.classList.add('active');
-    elem[l].parentNode.parentNode.parentNode.classList.add('pc-trigger');
-    elem[l].parentNode.parentNode.parentNode.classList.add('active');
-    elem[l].parentNode.parentNode.style.display = 'block';
-    elem[l].parentNode.parentNode.parentNode.parentNode.parentNode.classList.add('pc-trigger');
-    elem[l].parentNode.parentNode.parentNode.parentNode.style.display = 'block';
+    menuLink.parentNode.classList.add('active');
+    if (menuLink.parentNode.parentNode && menuLink.parentNode.parentNode.parentNode) {
+      menuLink.parentNode.parentNode.parentNode.classList.add('pc-trigger');
+      menuLink.parentNode.parentNode.parentNode.classList.add('active');
+      if (menuLink.parentNode.parentNode) {
+        menuLink.parentNode.parentNode.style.display = 'block';
+      }
+    }
+    if (menuLink.parentNode.parentNode && menuLink.parentNode.parentNode.parentNode && 
+        menuLink.parentNode.parentNode.parentNode.parentNode && 
+        menuLink.parentNode.parentNode.parentNode.parentNode.parentNode) {
+      menuLink.parentNode.parentNode.parentNode.parentNode.parentNode.classList.add('pc-trigger');
+      if (menuLink.parentNode.parentNode.parentNode.parentNode) {
+        menuLink.parentNode.parentNode.parentNode.parentNode.style.display = 'block';
+      }
+    }
   }
 }
 
