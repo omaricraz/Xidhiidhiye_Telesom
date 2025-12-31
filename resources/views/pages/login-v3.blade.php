@@ -88,7 +88,7 @@
               <div class="tab-content">
                 <div class="tab-pane show active" id="auth-1" role="tabpanel" aria-labelledby="auth-tab-1">
                   <div class="text-center">
-                    <h3 class="text-center mb-3">Welcome to the Able Pro</h3>
+                    <h3 class="text-center mb-3">Welcome to Telesom</h3>
                     <p class="mb-4">Sign up or login with your work email.</p>
                     <div class="d-grid my-3">
                       <button type="button" class="btn mt-2 btn-light-primary bg-light text-muted" onClick="change_tab('#auth-2')">
@@ -108,7 +108,7 @@
                 </div>
                 <div class="tab-pane" id="auth-2" role="tabpanel" aria-labelledby="auth-tab-2">
                   <div class="text-center">
-                    <h3 class="text-center mb-3">Welcome to the Able Pro</h3>
+                    <h3 class="text-center mb-3">Welcome to Telesom</h3>
                     <p class="mb-4">Sign up or login with your work email.</p>
                   </div>
                   <div class="mb-3">
@@ -248,7 +248,7 @@
           </div>
           <div class="auth-footer">
             <p class="m-0 w-100 text-center"
-              >By signing up, you confirm to have read Able pro <a href="#">Privacy Policy</a> and agree to the
+              >By signing up, you confirm to have read Telesom <a href="#">Privacy Policy</a> and agree to the
               <a href="#">Terms of Service</a>.</p
             >
           </div>

@@ -55,108 +55,56 @@
       </div>
     </li>
     <li class="dropdown pc-h-item">
+      @php
+        $recentNotices = \App\Models\Notice::with('creator')->latest()->take(5)->get();
+        $noticeCount = \App\Models\Notice::count();
+      @endphp
       <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
         <svg class="pc-icon">
           <use xlink:href="#custom-notification"></use>
         </svg>
-        <span class="badge bg-success pc-h-badge">3</span>
+        @if($noticeCount > 0)
+          <span class="badge bg-success pc-h-badge">{{ $noticeCount > 9 ? '9+' : $noticeCount }}</span>
+        @endif
       </a>
       <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown">
         <div class="dropdown-header d-flex align-items-center justify-content-between">
-          <h5 class="m-0">Notifications</h5>
-          <a href="#!" class="btn btn-link btn-sm">Mark all read</a>
+          <h5 class="m-0">Announcements</h5>
+          <a href="{{ route('noticeboard.index') }}" class="btn btn-link btn-sm">View all</a>
         </div>
         <div class="dropdown-body text-wrap header-notification-scroll position-relative" style="max-height: calc(100vh - 215px)">
-          <p class="text-span">Today</p>
-          <div class="card mb-2">
-            <div class="card-body">
-              <div class="d-flex">
-                <div class="flex-shrink-0">
-                  <svg class="pc-icon text-primary">
-                    <use xlink:href="#custom-layer"></use>
-                  </svg>
+          @if($recentNotices->count() > 0)
+            @foreach($recentNotices as $notice)
+              <a href="{{ route('noticeboard.index') }}" class="text-decoration-none d-block">
+                <div class="card mb-2">
+                  <div class="card-body">
+                    <div class="d-flex">
+                      <div class="flex-shrink-0">
+                        <div class="avtar bg-light-primary">
+                          <i class="ti ti-bell f-20"></i>
+                        </div>
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                        <span class="float-end text-sm text-muted">{{ $notice->created_at->diffForHumans() }}</span>
+                        <h5 class="text-body mb-2">{{ $notice->title }}</h5>
+                        <p class="mb-0 text-muted">{{ \Illuminate\Support\Str::limit($notice->content, 100) }}</p>
+                        <small class="text-muted d-block mt-1">
+                          <i class="ti ti-user"></i> {{ $notice->creator->name ?? 'Unknown' }}
+                        </small>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="flex-grow-1 ms-3">
-                  <span class="float-end text-sm text-muted">2 min ago</span>
-                  <h5 class="text-body mb-2">UI/UX Design</h5>
-                  <p class="mb-0">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type</p>
-                </div>
-              </div>
+              </a>
+            @endforeach
+          @else
+            <div class="text-center py-4">
+              <p class="text-muted mb-0">No announcements at this time.</p>
             </div>
-          </div>
-          <div class="card mb-2">
-            <div class="card-body">
-              <div class="d-flex">
-                <div class="flex-shrink-0">
-                  <svg class="pc-icon text-primary">
-                    <use xlink:href="#custom-sms"></use>
-                  </svg>
-                </div>
-                <div class="flex-grow-1 ms-3">
-                  <span class="float-end text-sm text-muted">1 hour ago</span>
-                  <h5 class="text-body mb-2">Message</h5>
-                  <p class="mb-0">Lorem Ipsum has been the industry's standard dummy text ever since the 1500.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <p class="text-span">Yesterday</p>
-          <div class="card mb-2">
-            <div class="card-body">
-              <div class="d-flex">
-                <div class="flex-shrink-0">
-                  <svg class="pc-icon text-primary">
-                    <use xlink:href="#custom-document-text"></use>
-                  </svg>
-                </div>
-                <div class="flex-grow-1 ms-3">
-                  <span class="float-end text-sm text-muted">2 hour ago</span>
-                  <h5 class="text-body mb-2">Forms</h5>
-                  <p class="mb-0">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card mb-2">
-            <div class="card-body">
-              <div class="d-flex">
-                <div class="flex-shrink-0">
-                  <svg class="pc-icon text-primary">
-                    <use xlink:href="#custom-user-bold"></use>
-                  </svg>
-                </div>
-                <div class="flex-grow-1 ms-3">
-                  <span class="float-end text-sm text-muted">12 hour ago</span>
-                  <h5 class="text-body mb-2">Challenge invitation</h5>
-                  <p class="mb-2"><span class="text-dark">Jonny aber</span> invites to join the challenge</p>
-                  <button class="btn btn-sm btn-outline-secondary me-2">Decline</button>
-                  <button class="btn btn-sm btn-primary">Accept</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card mb-2">
-            <div class="card-body">
-              <div class="d-flex">
-                <div class="flex-shrink-0">
-                  <svg class="pc-icon text-primary">
-                    <use xlink:href="#custom-security-safe"></use>
-                  </svg>
-                </div>
-                <div class="flex-grow-1 ms-3">
-                  <span class="float-end text-sm text-muted">5 hour ago</span>
-                  <h5 class="text-body mb-2">Security</h5>
-                  <p class="mb-0">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          @endif
         </div>
         <div class="text-center py-2">
-          <a href="#!" class="link-danger">Clear all Notifications</a>
+          <a href="{{ route('noticeboard.index') }}" class="link-primary">View all Announcements</a>
         </div>
       </div>
     </li>

@@ -44,7 +44,7 @@
                         @foreach($tasks as $task)
                         <tr>
                           <td>{{ $task->id }}</td>
-                          <td>{{ $task->title }}</td>
+                          <td><span style="color: #92CF01; font-weight: 500;">{{ $task->title }}</span></td>
                           <td>
                             <span class="badge bg-light-{{ $task->priority === 'High' ? 'danger' : ($task->priority === 'Medium' ? 'warning' : 'success') }}">
                               {{ $task->priority }}
@@ -134,7 +134,7 @@
                       <div class="d-flex align-items-start">
                         <div class="flex-grow-1 me-2">
                           <h6 class="mb-0">
-                            <a href="{{ route('tasks.show', $task) }}" class="text-decoration-none">{{ $task->title }}</a>
+                            <a href="{{ route('tasks.show', $task) }}" class="text-decoration-none" style="color: #92CF01; font-weight: 500;">{{ $task->title }}</a>
                           </h6>
                           <p class="my-1">
                             <i class="ti ti-{{ $task->status === 'Completed' ? 'check' : ($task->status === 'In_Progress' ? 'clock' : 'archive') }}"></i> 

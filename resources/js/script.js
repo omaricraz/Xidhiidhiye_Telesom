@@ -198,30 +198,39 @@ document.addEventListener('DOMContentLoaded', function () {
   if (if_layout) {
     var preset_layout = document.querySelectorAll('.theme-main-layout > a');
     preset_layout.forEach(function (element) {
-      element.addEventListener('click', function () {
-        // Reload the page after setting the layout for the first time to sync in all open tabs
-        location.reload();
-
+      element.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        // Remove active class from all layout options
         document.querySelectorAll('.theme-main-layout > a').forEach(function (el) {
           el.classList.remove('active');
         });
+        
+        // Add active class to clicked option
         this.classList.add('active');
-        if (this.getAttribute('data-value') == 'horizontal') {
+        
+        // Determine layout value based on data-value attribute
+        var clickedValue = this.getAttribute('data-value');
+        if (clickedValue == 'horizontal') {
           layoutValue = 'horizontal';
-        } else if (this.getAttribute('data-value') == 'compact') {
+        } else if (clickedValue == 'compact') {
           layoutValue = 'compact';
-        } else if (this.getAttribute('data-value') == 'tab') {
+        } else if (clickedValue == 'tab') {
           layoutValue = 'tab';
-        } else if (this.getAttribute('data-value') == 'color-header') {
+        } else if (clickedValue == 'color-header') {
           layoutValue = 'color-header';
         } else {
           layoutValue = 'vertical';
         }
 
-        // Set data to localStorage
+        // Set data to localStorage FIRST before reloading
         localStorage.setItem('layout', layoutValue);
-
-        setLayout();
+        
+        // Apply layout change immediately
+        main_layout_change(layoutValue);
+        
+        // Reload the page after setting the layout to sync in all open tabs
+        location.reload();
       });
     });
   }
@@ -231,14 +240,33 @@ document.addEventListener('DOMContentLoaded', function () {
 function setLayout() {
   var layout = localStorage.getItem('layout'); // Retrieve layout data from localStorage
 
+  // If no layout data found in localStorage, set default layout to 'color-header'
+  if (layout === null || layout === '') {
+    layout = 'color-header';
+    localStorage.setItem('layout', layout);
+  }
+
   // Pass the layout value to main_layout_change function
   main_layout_change(layout);
+
+  // Set active state for the layout option in the customizer
+  var layoutLinks = document.querySelectorAll('.theme-main-layout > a');
+  if (layoutLinks) {
+    layoutLinks.forEach(function (link) {
+      link.classList.remove('active');
+      if (link.getAttribute('data-value') === layout) {
+        link.classList.add('active');
+      }
+    });
+  }
 
   // Load corresponding scripts or perform actions based on the layout value
   if (layout !== null && layout !== '') {
     var script = document.createElement('script');
     if (layout === 'horizontal') {
-      document.querySelector('.pc-sidebar').classList.add('d-none');
+      if (document.querySelector('.pc-sidebar')) {
+        document.querySelector('.pc-sidebar').classList.add('d-none');
+      }
       script.src = '/build/js/layout-horizontal.js'; // Load script for horizontal layout
       document.body.appendChild(script);
     } else if (layout === 'color-header') {
@@ -253,12 +281,6 @@ function setLayout() {
       script.src = '/build/js/layout-tab.js'; // Load script for tab layout
       document.body.appendChild(script);
     }
-  }
-
-  // If no layout data found in localStorage, set default layout to 'color-header'
-  if (layout === null) {
-    main_layout_change('color-header');
-    localStorage.setItem('layout', 'color-header');
   }
 }
 

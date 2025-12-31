@@ -67,7 +67,7 @@ $dark-layout-color: $gray-900;
 // =====================================
 
 $blue: $blue-500;
-$secondary: $gray-600;
+$secondary: #92CF01; // Xidhiidhiye branding - green secondary color
 $indigo: $indigo-500;
 $purple: $purple-500;
 $pink: $pink-500;
@@ -79,7 +79,7 @@ $teal: $teal-500;
 $cyan: $cyan-500;
 
 $primary-text: $blue-600;
-$secondary-text: $gray-600;
+$secondary-text: #6B9A01; // Darker green for text contrast
 $success-text: $green-600;
 $info-text: $cyan-700;
 $warning-text: $yellow-700;
@@ -88,7 +88,7 @@ $light-text: $gray-600;
 $dark-text: $gray-700;
 
 $primary-bg-subtle: $blue-100;
-$secondary-bg-subtle: $gray-100;
+$secondary-bg-subtle: #E8F5C0; // Light green background for secondary
 $success-bg-subtle: $green-100;
 $info-bg-subtle: $cyan-100;
 $warning-bg-subtle: $yellow-100;
@@ -97,7 +97,7 @@ $light-bg-subtle: mix($gray-100, $white);
 $dark-bg-subtle: $gray-400;
 
 $primary-border-subtle: $blue-200;
-$secondary-border-subtle: $gray-200;
+$secondary-border-subtle: #B8E04A; // Light green border for secondary
 $success-border-subtle: $green-200;
 $info-border-subtle: $cyan-200;
 $warning-border-subtle: $yellow-200;
@@ -107,7 +107,7 @@ $dark-border-subtle: $gray-500;
 
 $preset-colors: (
   preset-1: (
-    primary: $blue-500
+    primary: #008000
   ),
   preset-2: (
     primary: $indigo-500

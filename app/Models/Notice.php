@@ -25,3 +25,4 @@ class Notice extends Model
     }
 }
 
+

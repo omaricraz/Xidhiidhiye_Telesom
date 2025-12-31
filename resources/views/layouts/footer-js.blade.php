@@ -9,13 +9,6 @@
 <script src="/build/js/theme.js"></script>
 <script src="/build/js/multi-lang.js"></script>
 <script src="/build/js/plugins/feather.min.js"></script>
-<div class="floting-button">
-  <a href="https://1.envato.market/zNkqj6" class="btn btn btn-danger buynowlinks d-inline-flex align-items-center gap-2" data-bs-toggle="tooltip" title="Buy Now">
-    <i class="ph-duotone ph-shopping-cart"></i>
-    <span>Buy Now</span>
-    
-  </a>
-</div>
 @if (config('app.dark_layout') != "")
 <script>
   // Only apply config theme if no user preference is stored in localStorage

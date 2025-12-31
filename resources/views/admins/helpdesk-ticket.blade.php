@@ -433,7 +433,7 @@
                   <li class="list-group-item">
                     <div class="d-inline-block">
                       <img src="/build/images/user/avatar-1.jpg" alt="" class="wid-20 rounded me-1 img-fluid" />
-                      <a href="#" class="link-secondary">Able Pro</a>
+                      <a href="#" class="link-secondary">Telesom</a>
                     </div>
                     <div class="float-end">
                       <a

@@ -38,7 +38,7 @@ class LoginController extends Controller
     {
         // Redirect based on role
         if ($user->isManager()) {
-            return redirect()->route('admin.users.index');
+            return redirect()->route('manager.dashboard');
         } elseif ($user->isTeamLead()) {
             return redirect()->route('lead.tasks.index');
         } elseif ($user->isIntern()) {

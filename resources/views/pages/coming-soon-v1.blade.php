@@ -15,7 +15,7 @@
                 <div class="row justify-content-center align-items-center">
                   <div class="col-md-6">
                     <h4 class="mb-0 mt-4"><b>Coming Soon</b></h4>
-                    <h2 class="mt-3 mb-4"><span class="text-primary">Able Pro</span> - The Bootstrap Admin Template</h2>
+                    <h2 class="mt-3 mb-4"><span class="text-primary">Telesom</span> - The Reliable Choice</h2>
                     <p>Presenting Material-UI based React Dashboard Template to build performance centric websites and applications.</p>
                     <div class="row d-flex my-4 my-md-5">
                       <div class="col">

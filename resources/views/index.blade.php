@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Live Preview | Able Pro Dashboard Template</title>
+    <title>Live Preview | Telesom Dashboard</title>
     <!-- [Meta] -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta
       name="description"
-      content="Able Pro is trending dashboard template made using Bootstrap 5 design framework. Able Pro is available in Bootstrap, React, CodeIgniter, Angular,  and .net Technologies."
+      content="Telesom - The Reliable Choice. Professional dashboard template made using Bootstrap 5 design framework."
     />
     <meta
       name="keywords"
@@ -138,11 +138,6 @@
                   target="_blank"
                   href="https://github.com/phoenixcoded/able-pro-free-admin-dashboard-template"
                   ><i class="ti ti-brand-github"></i
-                ></a>
-              </li>
-              <li class="nav-item">
-                <a class="btn btn btn-success btn-buy" target="_blank" href="https://1.envato.market/zNkqj6"
-                  >Purchase Now <i class="ti ti-external-link"></i
                 ></a>
               </li>
             </ul>

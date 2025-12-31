@@ -647,7 +647,7 @@
                           <div class="row g-1">
                             <div class="col-6">
                               <h6 class="mb-0">Apple Inc.</h6>
-                              <p class="text-muted mb-0"><small>#ABLE-PRO-T00232</small></p>
+                              <p class="text-muted mb-0"><small>#TELESOM-T00232</small></p>
                             </div>
                             <div class="col-6 text-end">
                               <h6 class="mb-1">$210,000</h6>
@@ -666,7 +666,7 @@
                           <div class="row g-1">
                             <div class="col-6">
                               <h6 class="mb-0">Spotify Music</h6>
-                              <p class="text-muted mb-0"><small>#ABLE-PRO-T10232</small></p>
+                              <p class="text-muted mb-0"><small>#TELESOM-T10232</small></p>
                             </div>
                             <div class="col-6 text-end">
                               <h6 class="mb-1">- 10,000</h6>
@@ -790,7 +790,7 @@
                           <div class="row g-1">
                             <div class="col-6">
                               <h6 class="mb-0">Apple Inc.</h6>
-                              <p class="text-muted mb-0"><small>#ABLE-PRO-T00232</small></p>
+                              <p class="text-muted mb-0"><small>#TELESOM-T00232</small></p>
                             </div>
                             <div class="col-6 text-end">
                               <h6 class="mb-1">$210,000</h6>
@@ -809,7 +809,7 @@
                           <div class="row g-1">
                             <div class="col-6">
                               <h6 class="mb-0">Spotify Music</h6>
-                              <p class="text-muted mb-0"><small>#ABLE-PRO-T10232</small></p>
+                              <p class="text-muted mb-0"><small>#TELESOM-T10232</small></p>
                             </div>
                             <div class="col-6 text-end">
                               <h6 class="mb-1">- 10,000</h6>
@@ -853,7 +853,7 @@
                           <div class="row g-1">
                             <div class="col-6">
                               <h6 class="mb-0">Spotify Music</h6>
-                              <p class="text-muted mb-0"><small>#ABLE-PRO-T10232</small></p>
+                              <p class="text-muted mb-0"><small>#TELESOM-T10232</small></p>
                             </div>
                             <div class="col-6 text-end">
                               <h6 class="mb-1">- 10,000</h6>
@@ -912,7 +912,7 @@
                           <div class="row g-1">
                             <div class="col-6">
                               <h6 class="mb-0">Apple Inc.</h6>
-                              <p class="text-muted mb-0"><small>#ABLE-PRO-T00232</small></p>
+                              <p class="text-muted mb-0"><small>#TELESOM-T00232</small></p>
                             </div>
                             <div class="col-6 text-end">
                               <h6 class="mb-1">$210,000</h6>

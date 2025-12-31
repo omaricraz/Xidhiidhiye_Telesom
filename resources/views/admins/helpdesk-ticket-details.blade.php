@@ -257,7 +257,7 @@
                     <select class="form-control col-sm-12">
                       <option value="prod-1">Able Admin</option>
                       <option value="prod-2">Guru Dash</option>
-                      <option value="prod-3">Able pro</option>
+                      <option value="prod-3">Telesom</option>
                       <option value="prod-4">Able Dash</option>
                       <option value="prod-5">Dash Able</option>
                     </select>

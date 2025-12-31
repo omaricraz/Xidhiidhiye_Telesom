@@ -27,7 +27,7 @@
           </div>
           <div class="collapse pc-user-links" id="pc_sidebar_userlink">
             <div class="pt-3">
-              <a href="#!">
+              <a href="{{ route('profile.show') }}">
                 <i class="ti ti-user"></i>
                 <span data-i18n="My Account">My Account</span>
               </a>

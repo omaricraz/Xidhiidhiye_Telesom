@@ -36,12 +36,13 @@ function getQueryStringParameters() {
     }
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    var elem = document.querySelectorAll('.btn-buy, .buynowlinks');
-    for (var j = 0; j < elem.length; j++) {
-      elem[j].setAttribute('href', BuyNowLink);
-    }
-  });
+  // Buy button functionality disabled for Telesom rebranding
+  // document.addEventListener('DOMContentLoaded', function () {
+  //   var elem = document.querySelectorAll('.btn-buy, .buynowlinks');
+  //   for (var j = 0; j < elem.length; j++) {
+  //     elem[j].setAttribute('href', BuyNowLink);
+  //   }
+  // });
   document.addEventListener('DOMContentLoaded', function () {
     var elem = document.querySelectorAll('.technology-block a,.drp-technology a, .tech-link a');
     for (var j = 0; j < elem.length; j++) {

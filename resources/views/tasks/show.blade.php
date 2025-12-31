@@ -16,7 +16,7 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-6">
-                    <p><strong>Title:</strong> {{ $task->title }}</p>
+                    <p><strong>Title:</strong> <span style="color: #92CF01; font-weight: 500;">{{ $task->title }}</span></p>
                     <p><strong>Description:</strong> {{ $task->description ?? 'N/A' }}</p>
                     <p><strong>Priority:</strong> 
                       <span class="badge bg-light-{{ $task->priority === 'High' ? 'danger' : ($task->priority === 'Medium' ? 'warning' : 'success') }}">

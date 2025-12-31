@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LearningGoalController;
+use App\Http\Controllers\ManagerDashboardController;
 use App\Http\Controllers\NoticeboardController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QAController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
@@ -12,10 +14,20 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-// Redirect guests to login page
+// Redirect guests to login page, authenticated users to their default route
 Route::get('/', function () {
     if (Auth::check()) {
-        return redirect()->route('home');
+        $user = Auth::user();
+        // Redirect based on role (same logic as LoginController)
+        if ($user->isManager()) {
+            return redirect()->route('manager.dashboard');
+        } elseif ($user->isTeamLead()) {
+            return redirect()->route('lead.tasks.index');
+        } elseif ($user->isIntern()) {
+            return redirect()->route('onboarding.index');
+        } else {
+            return redirect()->route('tasks.index');
+        }
     }
     return redirect()->route('login');
 });
@@ -27,6 +39,9 @@ Route::middleware(['auth'])->group(function () {
         // Return a view named 'index' when accessing the home URL
         return view('index');
     })->name('home');
+
+    // Manager Dashboard
+    Route::get('manager/dashboard', [ManagerDashboardController::class, 'index'])->name('manager.dashboard');
 
     // Admin routes (Manager only)
     Route::prefix('admin')->name('admin.')->group(function () {
@@ -56,6 +71,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Who's Who route
     Route::get('whoswho', [WhoIsWhoController::class, 'index'])->name('whoswho.index');
+
+    // Profile route
+    Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
 
     // Noticeboard routes
     Route::get('noticeboard', [NoticeboardController::class, 'index'])->name('noticeboard.index');

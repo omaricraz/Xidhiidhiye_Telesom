@@ -101,9 +101,9 @@
                           <img src="/build/images/admin/img-star.png" alt="img" class="img-fluid" />
                         </div>
                         <div class="flex-grow-1 ms-3">
-                          <h6 class="mb-1">Able pro Branding</h6>
+                          <h6 class="mb-1">Telesom Branding</h6>
                           <p class="mb-0 text-muted"
-                            >Personalize your school and eliminate Able Pro branding from your school website, emails, and products. To
+                            >Personalize your school and customize Telesom branding for your school website, emails, and products. To
                             access this feature, upgrade to the Professional plan.</p
                           >
                         </div>

@@ -3,7 +3,7 @@
 <!-- [Head] start -->
 
 <head>
-    <title>@yield('title') | Able Pro Dashboard Template</title>
+    <title>@yield('title') | Telesom Dashboard</title>
     @include('layouts/head-page-meta')
 
     @yield('css')
@@ -14,7 +14,7 @@
 <!-- [Body] Start -->
 <body data-pc-preset="{{config('app.preset_theme')}}" data-pc-sidebar-caption="{{config('app.caption_show')}}" data-pc-layout="{{config('app.theme_layout')}}" data-pc-direction="{{config('app.rtlflag')}}" data-pc-theme="{{config('app.dark_layout') ?  config('app.dark_layout') == 'default' ?? 'dark' : 'light'}}">
 <script>
-  // Apply theme from localStorage immediately to prevent flash of wrong theme
+  // Apply theme and layout from localStorage immediately to prevent flash of wrong theme
   (function() {
     if (typeof Storage !== 'undefined') {
       var savedTheme = localStorage.getItem('theme');
@@ -25,6 +25,12 @@
         } else {
           document.body.setAttribute('data-pc-theme', savedTheme);
         }
+      }
+      
+      // Apply layout from localStorage if available
+      var savedLayout = localStorage.getItem('layout');
+      if (savedLayout) {
+        document.body.setAttribute('data-pc-layout', savedLayout);
       }
     }
   })();
@@ -48,7 +54,13 @@
         @yield('scripts')
     @else
         <script>
-            localStorage.setItem('layout', '{{config('app.theme_layout')}}');
+            // Only set layout from config if no user preference exists in localStorage
+            if (typeof Storage !== 'undefined') {
+                var savedLayout = localStorage.getItem('layout');
+                if (!savedLayout || savedLayout === '') {
+                    localStorage.setItem('layout', '{{config('app.theme_layout')}}');
+                }
+            }
         </script>
     @endif
 </body>

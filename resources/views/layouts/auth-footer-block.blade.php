@@ -3,7 +3,7 @@
   <hr class="mb-3 mt-4" />
   <div class="row">
     <div class="col my-1">
-      <p class="m-0">Able Pro ♥ crafted by Team <a href="https://themeforest.net/user/phoenixcoded" target="_blank"> Phoenixcoded</a></p>
+      <p class="m-0">Telesom - The Reliable Choice</p>
     </div>
     <div class="col-auto my-1">
       <ul class="list-inline footer-link mb-0">

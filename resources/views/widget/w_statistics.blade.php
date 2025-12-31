@@ -186,8 +186,8 @@
                       <img src="/build/images/user/avatar-1.jpg" alt="user-image" class="avtar rounded-circle wid-45 hei-45" />
                     </div>
                     <div class="flex-grow-1 ms-3">
-                      <h6 class="mb-0">Able pro</h6>
-                      <small class="text-muted">@ableprodevelop</small>
+                      <h6 class="mb-0">Telesom</h6>
+                      <small class="text-muted">@telesom</small>
                     </div>
                     <div class="dropdown">
                       <a

@@ -31,11 +31,6 @@
             ><i class="ti ti-brand-github"></i
           ></a>
         </li>
-        <li class="nav-item">
-          <a class="btn btn btn-success" target="_blank" href="https://1.envato.market/zNkqj6"
-            >Purchase Now <i class="ti ti-external-link"></i
-          ></a>
-        </li>
       </ul>
     </div>
   </div>

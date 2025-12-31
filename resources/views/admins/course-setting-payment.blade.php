@@ -77,7 +77,7 @@
                             <img src="/build/images/admin/img-payment-1.png" alt="images" class="img-fluid mb-4" />
                             <h5>Establish your payment gateway</h5>
                             <p class="text-muted"
-                              >Able Pro: pay streamlines your payout process, facilitating faster payments while managing author and
+                              >Telesom: pay streamlines your payout process, facilitating faster payments while managing author and
                               affiliate payouts on your behalf.</p
                             >
                             <div class="mb-3 text-start">
