@@ -30,7 +30,7 @@
                         <div class="card-body text-center pb-2 profile-card-gradient" style="border-radius: 0.375rem 0.375rem 0 0;">
                           <div class="position-relative d-inline-block">
                             <img src="{{ $member->getProfileImageUrl() }}" 
-                                 alt="{{ $member->full_name ?? $member->name }}" 
+                                 alt="{{ $member->name }}" 
                                  class="rounded-circle border border-4 border-white shadow" 
                                  style="width: 100px; height: 100px; object-fit: cover;" />
                             <!-- Status Indicator Badge -->
@@ -44,7 +44,7 @@
                         <!-- Card Content -->
                         <div class="card-body pt-3">
                           <div class="text-center mb-3">
-                            <h6 class="card-title mb-1 fw-semibold">{{ $member->full_name ?? $member->name }}</h6>
+                            <h6 class="card-title mb-1 fw-semibold">{{ $member->name }}</h6>
                             <p class="text-muted f-12 mb-2">{{ $member->email }}</p>
                             
                             <!-- Status Badge -->
@@ -119,7 +119,7 @@
                       <div class="card-body text-center pb-2 profile-card-gradient" style="border-radius: 0.375rem 0.375rem 0 0;">
                         <div class="position-relative d-inline-block">
                           <img src="{{ $member->getProfileImageUrl() }}" 
-                               alt="{{ $member->full_name ?? $member->name }}" 
+                               alt="{{ $member->name }}" 
                                class="rounded-circle border border-4 border-white shadow" 
                                style="width: 100px; height: 100px; object-fit: cover;" />
                           <!-- Status Indicator Badge -->
@@ -133,7 +133,7 @@
                       <!-- Card Content -->
                       <div class="card-body pt-3">
                         <div class="text-center mb-3">
-                          <h6 class="card-title mb-1 fw-semibold">{{ $member->full_name ?? $member->name }}</h6>
+                          <h6 class="card-title mb-1 fw-semibold">{{ $member->name }}</h6>
                           <p class="text-muted f-12 mb-2">{{ $member->email }}</p>
                           
                           <!-- Status Badge -->
@@ -211,7 +211,7 @@
                       <div class="card-body text-center pb-2 profile-card-gradient" style="border-radius: 0.375rem 0.375rem 0 0;">
                         <div class="position-relative d-inline-block">
                           <img src="{{ $member->getProfileImageUrl() }}" 
-                               alt="{{ $member->full_name ?? $member->name }}" 
+                               alt="{{ $member->name }}" 
                                class="rounded-circle border border-4 border-white shadow" 
                                style="width: 100px; height: 100px; object-fit: cover;" />
                           <!-- Status Indicator Badge -->
@@ -225,7 +225,7 @@
                       <!-- Card Content -->
                       <div class="card-body pt-3">
                         <div class="text-center mb-3">
-                          <h6 class="card-title mb-1 fw-semibold">{{ $member->full_name ?? $member->name }}</h6>
+                          <h6 class="card-title mb-1 fw-semibold">{{ $member->name }}</h6>
                           <p class="text-muted f-12 mb-2">{{ $member->email }}</p>
                           
                           <!-- Status Badge -->
@@ -299,7 +299,7 @@
                       <div class="card-body text-center pb-2 profile-card-gradient" style="border-radius: 0.375rem 0.375rem 0 0;">
                         <div class="position-relative d-inline-block">
                           <img src="{{ $member->getProfileImageUrl() }}" 
-                               alt="{{ $member->full_name ?? $member->name }}" 
+                               alt="{{ $member->name }}" 
                                class="rounded-circle border border-4 border-white shadow" 
                                style="width: 100px; height: 100px; object-fit: cover;" />
                           <!-- Status Indicator Badge -->
@@ -313,7 +313,7 @@
                       <!-- Card Content -->
                       <div class="card-body pt-3">
                         <div class="text-center mb-3">
-                          <h6 class="card-title mb-1 fw-semibold">{{ $member->full_name ?? $member->name }}</h6>
+                          <h6 class="card-title mb-1 fw-semibold">{{ $member->name }}</h6>
                           <p class="text-muted f-12 mb-2">{{ $member->email }}</p>
                           
                           <!-- Status Badge -->

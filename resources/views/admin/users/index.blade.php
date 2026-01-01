@@ -43,7 +43,7 @@
                           <div class="d-flex align-items-center">
                             <div class="flex-shrink-0">
                               @if($user->profile_image)
-                                <img src="{{ $user->profile_image }}" alt="{{ $user->full_name ?? $user->name }}" class="avtar avtar-xs rounded-circle" style="object-fit: cover;" />
+                                <img src="{{ $user->profile_image }}" alt="{{ $user->name }}" class="avtar avtar-xs rounded-circle" style="object-fit: cover;" />
                               @else
                                 <span class="avtar avtar-xs rounded-circle bg-light-primary">
                                   {{ $user->status_emoji ?? '👤' }}
@@ -51,7 +51,7 @@
                               @endif
                             </div>
                             <div class="flex-grow-1 ms-3">
-                              <h6 class="mb-0">{{ $user->full_name ?? $user->name }}</h6>
+                              <h6 class="mb-0">{{ $user->name }}</h6>
                             </div>
                           </div>
                         </td>

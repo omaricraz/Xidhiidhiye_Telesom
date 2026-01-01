@@ -29,15 +29,6 @@
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Full Name</label>
-                        <input type="text" class="form-control @error('full_name') is-invalid @enderror" name="full_name" value="{{ old('full_name', $user->full_name) }}">
-                        @error('full_name')
-                          <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="mb-3">
                         <label class="form-label">Email</label>
                         <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $user->email) }}" required>
                         @error('email')

@@ -31,12 +31,12 @@
                   <button class="btn btn-sm btn-primary" onclick="window.print()">
                     <i class="ti ti-printer me-1"></i> Print
                   </button>
-                  <button class="btn btn-sm btn-success" onclick="exportToPDF()">
+                  <a href="{{ route('reports.tasks.pdf', $filters) }}" class="btn btn-sm btn-success">
                     <i class="ti ti-download me-1"></i> Download PDF
-                  </button>
-                  <button class="btn btn-sm btn-info" onclick="exportToExcel()">
+                  </a>
+                  <a href="{{ route('reports.tasks.export', $filters) }}" class="btn btn-sm btn-info">
                     <i class="ti ti-file-spreadsheet me-1"></i> Export Excel
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -68,6 +68,19 @@
                         @foreach($teams as $team)
                           <option value="{{ $team->id }}" {{ $filters['team_id'] == $team->id ? 'selected' : '' }}>
                             {{ $team->name }}
+                          </option>
+                        @endforeach
+                      </select>
+                    </div>
+                    @endif
+                    @if(Auth::user()->isManager() || (Auth::user()->isTeamLead() && Auth::user()->team_id))
+                    <div class="col-md-2">
+                      <label class="form-label">Employee</label>
+                      <select class="form-select" name="employee_id">
+                        <option value="">All Employees</option>
+                        @foreach($employees as $employee)
+                          <option value="{{ $employee->id }}" {{ $filters['employee_id'] == $employee->id ? 'selected' : '' }}>
+                            {{ $employee->name }} @if($employee->team)({{ $employee->team->name }})@endif
                           </option>
                         @endforeach
                       </select>
@@ -193,22 +206,6 @@
                 </div>
               </div>
             </div>
-
-            @if(Auth::user()->isManager() && !empty($tasksByTeam))
-            <!-- Tasks by Team Chart -->
-            <div class="row mb-3">
-              <div class="col-12">
-                <div class="card">
-                  <div class="card-header">
-                    <h5 class="mb-0">Tasks by Team</h5>
-                  </div>
-                  <div class="card-body">
-                    <div id="team-chart"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            @endif
 
             <!-- Detailed Task List -->
             <div class="card">
@@ -438,69 +435,15 @@
     chart.render();
   }
 
-  @if(Auth::user()->isManager() && !empty($tasksByTeam))
-  // Tasks by Team Chart
-  function renderTeamChart() {
-    const colors = getChartColors();
-    const teamData = @json($tasksByTeam);
-    const teams = Object.keys(teamData);
-    const values = Object.values(teamData);
-    
-    const options = {
-      series: [{
-        name: 'Tasks',
-        data: values
-      }],
-      chart: {
-        type: 'bar',
-        height: 350,
-        horizontal: true,
-      },
-      colors: [colors.primary],
-      plotOptions: {
-        bar: {
-          horizontal: true,
-          dataLabels: {
-            position: 'top',
-          },
-        }
-      },
-      dataLabels: {
-        enabled: true,
-      },
-      xaxis: {
-        categories: teams,
-        title: {
-          text: 'Number of Tasks'
-        }
-      },
-      yaxis: {
-        title: {
-          text: 'Teams'
-        }
-      },
-    };
-    
-    const chart = new ApexCharts(document.querySelector('#team-chart'), options);
-    chart.render();
-  }
-  @endif
-
   // Initialize all charts
   document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
       renderStatusChart();
       renderPriorityChart();
-      @if(Auth::user()->isManager() && !empty($tasksByTeam))
-      renderTeamChart();
-      @endif
     }, 500);
   });
 
   // Export functions
-  function exportToPDF() {
-    alert('PDF export functionality will be implemented. For now, please use the Print function and save as PDF.');
-  }
 
   function exportToExcel() {
     alert('Excel export functionality will be implemented. For now, please use the table export options.');

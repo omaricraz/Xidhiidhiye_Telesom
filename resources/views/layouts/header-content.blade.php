@@ -102,7 +102,7 @@
               <img src="{{ Auth::user()->getProfileImageUrl() }}" alt="user-image" class="user-avtar rounded-circle" style="width: 35px; height: 35px; object-fit: cover;" />
             </div>
             <div class="flex-grow-1 ms-3">
-              <h6 class="mb-1">{{ Auth::user()->full_name ?? Auth::user()->name }}</h6>
+              <h6 class="mb-1">{{ Auth::user()->name }}</h6>
               <span class="d-block mb-1">{{ Auth::user()->email }}</span>
               <span class="badge bg-light-{{ Auth::user()->role === 'Manager' ? 'danger' : (Auth::user()->role === 'Team_Lead' ? 'warning' : 'primary') }} fs-7 px-2 py-1">
                 {{ Auth::user()->role }}

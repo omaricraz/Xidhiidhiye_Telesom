@@ -17,7 +17,6 @@
                 <div class="row">
                   <div class="col-md-6">
                     <p><strong>Name:</strong> {{ $user->name }}</p>
-                    <p><strong>Full Name:</strong> {{ $user->full_name ?? 'N/A' }}</p>
                     <p><strong>Email:</strong> {{ $user->email }}</p>
                     <p><strong>Role:</strong> <span class="badge bg-light-{{ $user->role === 'Manager' ? 'danger' : ($user->role === 'Team_Lead' ? 'warning' : 'primary') }}">{{ $user->role }}</span></p>
                     <p><strong>Team:</strong> {{ $user->team->name ?? 'N/A' }}</p>

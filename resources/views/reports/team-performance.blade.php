@@ -28,6 +28,12 @@
                   <button class="btn btn-sm btn-primary" onclick="window.print()">
                     <i class="ti ti-printer me-1"></i> Print
                   </button>
+                  <a href="{{ route('reports.teams.pdf', $filters) }}" class="btn btn-sm btn-success">
+                    <i class="ti ti-download me-1"></i> Download PDF
+                  </a>
+                  <a href="{{ route('reports.teams.export', $filters) }}" class="btn btn-sm btn-info">
+                    <i class="ti ti-file-spreadsheet me-1"></i> Export Excel
+                  </a>
                 </div>
               </div>
             </div>

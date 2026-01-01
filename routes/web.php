@@ -102,9 +102,24 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('/', [ReportsController::class, 'index'])->name('index');
         Route::get('tasks', [ReportsController::class, 'taskManagement'])->name('tasks');
-        Route::get('users', [ReportsController::class, 'userActivity'])->name('users');
+        Route::get('tasks/export', [ReportsController::class, 'exportTaskManagement'])->name('tasks.export');
+        Route::get('tasks/pdf', [ReportsController::class, 'exportTaskManagementPDF'])->name('tasks.pdf');
+        // Redirect old user activity routes to team performance
+        Route::get('users', function(\Illuminate\Http\Request $request) {
+            return redirect()->route('reports.teams', $request->query());
+        })->name('users');
+        Route::get('users/export', function(\Illuminate\Http\Request $request) {
+            return redirect()->route('reports.teams.export', $request->query());
+        })->name('users.export');
+        Route::get('users/pdf', function(\Illuminate\Http\Request $request) {
+            return redirect()->route('reports.teams.pdf', $request->query());
+        })->name('users.pdf');
         Route::get('learning', [ReportsController::class, 'learningProgress'])->name('learning');
+        Route::get('learning/export', [ReportsController::class, 'exportLearningProgress'])->name('learning.export');
+        Route::get('learning/pdf', [ReportsController::class, 'exportLearningProgressPDF'])->name('learning.pdf');
         Route::get('teams', [ReportsController::class, 'teamPerformance'])->name('teams');
+        Route::get('teams/export', [ReportsController::class, 'exportTeamPerformance'])->name('teams.export');
+        Route::get('teams/pdf', [ReportsController::class, 'exportTeamPerformancePDF'])->name('teams.pdf');
     });
 
     // Template pages route disabled - uncomment below to enable template demo pages

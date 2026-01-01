@@ -83,8 +83,7 @@ class DatabaseSeeder extends Seeder
         $manager = User::firstOrCreate(
             ['email' => 'manager@xidhiidhiye.com'],
             [
-                'name' => 'Manager',
-                'full_name' => 'John Manager',
+                'name' => 'John Manager',
                 'email' => 'manager@xidhiidhiye.com',
                 'password' => Hash::make('password'),
                 'role' => 'Manager',
@@ -111,8 +110,7 @@ class DatabaseSeeder extends Seeder
         $devLead = User::firstOrCreate(
             ['email' => 'devlead@xidhiidhiye.com'],
             [
-                'name' => 'Sarah: Dev Lead',
-                'full_name' => 'Sarah Dev Lead',
+                'name' => 'Sarah Dev Lead',
                 'email' => 'devlead@xidhiidhiye.com',
                 'password' => Hash::make('password'),
                 'role' => 'Team_Lead',
@@ -134,8 +132,7 @@ class DatabaseSeeder extends Seeder
         $devOpsLead = User::firstOrCreate(
             ['email' => 'devopslead@xidhiidhiye.com'],
             [
-                'name' => 'Mike: DevOps Lead',
-                'full_name' => 'Mike DevOps Lead',
+                'name' => 'Mike DevOps Lead',
                 'email' => 'devopslead@xidhiidhiye.com',
                 'password' => Hash::make('password'),
                 'role' => 'Team_Lead',
@@ -158,8 +155,7 @@ class DatabaseSeeder extends Seeder
         $devIntern1 = User::firstOrCreate(
             ['email' => 'devintern1@xidhiidhiye.com'],
             [
-                'name' => 'Alice: Dev Intern',
-                'full_name' => 'Alice Developer',
+                'name' => 'Alice Developer',
                 'email' => 'devintern1@xidhiidhiye.com',
                 'password' => Hash::make('password'),
                 'role' => 'Intern',
@@ -181,8 +177,7 @@ class DatabaseSeeder extends Seeder
         $devIntern2 = User::firstOrCreate(
             ['email' => 'devintern2@xidhiidhiye.com'],
             [
-                'name' => 'Bob: Dev Intern',
-                'full_name' => 'Bob Developer',
+                'name' => 'Bob Developer',
                 'email' => 'devintern2@xidhiidhiye.com',
                 'password' => Hash::make('password'),
                 'role' => 'Intern',
@@ -204,8 +199,7 @@ class DatabaseSeeder extends Seeder
         $devOpsIntern1 = User::firstOrCreate(
             ['email' => 'devopsintern1@xidhiidhiye.com'],
             [
-                'name' => 'Charlie: DevOps Intern',
-                'full_name' => 'Charlie DevOps',
+                'name' => 'Charlie DevOps',
                 'email' => 'devopsintern1@xidhiidhiye.com',
                 'password' => Hash::make('password'),
                 'role' => 'Intern',
@@ -227,8 +221,7 @@ class DatabaseSeeder extends Seeder
         $devOpsIntern2 = User::firstOrCreate(
             ['email' => 'devopsintern2@xidhiidhiye.com'],
             [
-                'name' => 'Diana: DevOps Intern',
-                'full_name' => 'Diana DevOps',
+                'name' => 'Diana DevOps',
                 'email' => 'devopsintern2@xidhiidhiye.com',
                 'password' => Hash::make('password'),
                 'role' => 'Intern',

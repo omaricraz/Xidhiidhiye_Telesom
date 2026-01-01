@@ -339,14 +339,26 @@
     <script>
       // Theme toggle functionality
       document.addEventListener('DOMContentLoaded', function() {
+        // #region agent log
+        fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'homepage.blade.php:341',message:'DOMContentLoaded started',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'ALL'})}).catch(()=>{});
+        // #endregion
         var themeToggle = document.getElementById('theme-toggle');
         var themeIcon = document.getElementById('theme-icon');
         var heroLogo = document.getElementById('hero-logo');
         var footerLogo = document.getElementById('footer-logo');
         
+        // #region agent log
+        fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'homepage.blade.php:347',message:'Logo elements found',data:{heroLogoFound:!!heroLogo,footerLogoFound:!!footerLogo},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'3'})}).catch(()=>{});
+        // #endregion
+        
         // Get current theme from body attribute (set by inline script) or localStorage
         var body = document.body;
         var currentTheme = body.getAttribute('data-pc-theme') || localStorage.getItem('theme') || 'light';
+        
+        // #region agent log
+        fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'homepage.blade.php:349',message:'Theme detected',data:{currentTheme:currentTheme,bodyAttr:body.getAttribute('data-pc-theme'),localStorageTheme:localStorage.getItem('theme')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'4'})}).catch(()=>{});
+        // #endregion
+        
         if (currentTheme && currentTheme !== 'default') {
           applyTheme(currentTheme);
         } else {
@@ -364,6 +376,9 @@
             var body = document.body;
             var currentThemeAttr = body.getAttribute('data-pc-theme') || 'light';
             var newTheme = currentThemeAttr === 'light' ? 'dark' : 'light';
+            // #region agent log
+            fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'homepage.blade.php:366',message:'Theme toggle clicked',data:{currentTheme:currentThemeAttr,newTheme:newTheme},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'4'})}).catch(()=>{});
+            // #endregion
             applyTheme(newTheme);
           });
         }
@@ -382,18 +397,49 @@
         }
         
         function updateLogos(theme) {
+          // #region agent log
+          fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'homepage.blade.php:384',message:'updateLogos called',data:{theme:theme,heroLogoExists:!!heroLogo,footerLogoExists:!!footerLogo},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'2'})}).catch(()=>{});
+          // #endregion
           // Update hero logo
           if (heroLogo) {
-            heroLogo.src = theme === 'dark' 
+            var heroSrc = theme === 'dark' 
               ? '/build/images/xidhiidhiye-logo-purple.svg' 
               : '/build/images/xidhiidhiye-logo.svg';
+            heroLogo.src = heroSrc;
+            // #region agent log
+            fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'homepage.blade.php:390',message:'Hero logo src set',data:{theme:theme,src:heroSrc,actualSrc:heroLogo.src},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'5'})}).catch(()=>{});
+            // #endregion
+            heroLogo.onerror = function() {
+              // #region agent log
+              fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'homepage.blade.php:393',message:'Hero logo load error',data:{src:heroLogo.src,theme:theme},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'1'})}).catch(()=>{});
+              // #endregion
+            };
+            heroLogo.onload = function() {
+              // #region agent log
+              fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'homepage.blade.php:397',message:'Hero logo loaded successfully',data:{src:heroLogo.src,theme:theme},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'1'})}).catch(()=>{});
+              // #endregion
+            };
           }
           
           // Update footer logo
           if (footerLogo) {
-            footerLogo.src = theme === 'dark' 
+            var footerSrc = theme === 'dark' 
               ? '/build/images/xidhiidhiye-logo-purple.svg' 
               : '/build/images/xidhiidhiye-logo.svg';
+            footerLogo.src = footerSrc;
+            // #region agent log
+            fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'homepage.blade.php:405',message:'Footer logo src set',data:{theme:theme,src:footerSrc,actualSrc:footerLogo.src},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'5'})}).catch(()=>{});
+            // #endregion
+            footerLogo.onerror = function() {
+              // #region agent log
+              fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'homepage.blade.php:408',message:'Footer logo load error',data:{src:footerLogo.src,theme:theme},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'1'})}).catch(()=>{});
+              // #endregion
+            };
+            footerLogo.onload = function() {
+              // #region agent log
+              fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'homepage.blade.php:412',message:'Footer logo loaded successfully',data:{src:footerLogo.src,theme:theme},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'1'})}).catch(()=>{});
+              // #endregion
+            };
           }
         }
         

@@ -14,14 +14,14 @@
               <div class="card-body text-center">
                 <div class="mb-4">
                   @if($user->profile_image)
-                    <img src="{{ $user->profile_image }}" alt="{{ $user->full_name ?? $user->name }}" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" />
+                    <img src="{{ $user->profile_image }}" alt="{{ $user->name }}" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" />
                   @else
                     <div class="avtar avtar-xxl rounded-circle bg-light-primary d-inline-flex align-items-center justify-content-center" style="width: 150px; height: 150px;">
                       <span style="font-size: 60px;">{{ $user->status_emoji ?? '👤' }}</span>
                     </div>
                   @endif
                 </div>
-                <h4 class="mb-1">{{ $user->full_name ?? $user->name }}</h4>
+                <h4 class="mb-1">{{ $user->name }}</h4>
                 <p class="text-muted mb-3">{{ $user->email }}</p>
                 <span class="badge bg-light-{{ $user->role === 'Manager' ? 'danger' : ($user->role === 'Team_Lead' ? 'warning' : 'primary') }} fs-6 px-3 py-2">
                   {{ $user->role }}
@@ -82,16 +82,7 @@
               <div class="card-body">
                 <div class="row mb-3">
                   <div class="col-sm-4">
-                    <strong>Full Name:</strong>
-                  </div>
-                  <div class="col-sm-8">
-                    {{ $user->full_name ?? 'N/A' }}
-                  </div>
-                </div>
-                <hr>
-                <div class="row mb-3">
-                  <div class="col-sm-4">
-                    <strong>Display Name:</strong>
+                    <strong>Name:</strong>
                   </div>
                   <div class="col-sm-8">
                     {{ $user->name }}

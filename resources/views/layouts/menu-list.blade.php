@@ -83,16 +83,16 @@
     <span class="pc-mtext" data-i18n="Q&A (Suaalo)">Q&A (Suaalo)</span>
   </a>
 </li>
+@if(Auth::user()->isManager() || Auth::user()->isTeamLead())
 <li class="pc-item">
   <a href="{{ route('reports.index') }}" class="pc-link">
     <span class="pc-micon">
-      <svg class="pc-icon">
-        <use xlink:href="#custom-chart"></use>
-      </svg>
+      <i class="ti ti-report"></i>
     </span>
     <span class="pc-mtext" data-i18n="Reports">Reports</span>
   </a>
 </li>
+@endif
 @endauth
 {{-- Template Pages section removed - uncomment below to show template demo pages
 <li class="pc-item pc-caption">
