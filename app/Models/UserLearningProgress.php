@@ -40,3 +40,4 @@ class UserLearningProgress extends Model
 }
 
 
+

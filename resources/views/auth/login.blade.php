@@ -120,13 +120,15 @@
 
         /* Auth Background - Light Theme */
         [data-pc-theme="light"] .auth-main .auth-wrapper.v1 .auth-form {
-            background: linear-gradient(to bottom, #f7fafc 0%, #ffffff 100%);
+            background-image: none !important;
+            background: linear-gradient(to bottom, #f7fafc 0%, #ffffff 100%) !important;
             background-size: cover;
         }
 
         /* Auth Background - Dark Theme */
         [data-pc-theme="dark"] .auth-main .auth-wrapper.v1 .auth-form {
-            background: linear-gradient(to bottom, #1a202c 0%, #2d3748 100%);
+            background-image: none !important;
+            background: linear-gradient(to bottom, #1a202c 0%, #2d3748 100%) !important;
             background-size: cover;
         }
 
@@ -292,17 +294,6 @@
                 } else {
                     themeIcon.className = 'ph ph-sun';
                 }
-            }
-        }
-        
-        // Sync with homepage theme on load
-        if (typeof Storage !== 'undefined') {
-            var savedTheme = localStorage.getItem('theme');
-            if (savedTheme && savedTheme !== 'default') {
-                applyTheme(savedTheme);
-            } else if (savedTheme === 'default') {
-                var dark_layout = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-                applyTheme(dark_layout);
             }
         }
     });

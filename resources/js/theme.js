@@ -351,4 +351,11 @@ function change_box_container(value) {
         activeBtn.classList.remove('active');
       }
       var newActiveBtn = document.querySelector('.theme-container .btn[data-value="false"]');
-      i
+      if (newActiveBtn) {
+        newActiveBtn.classList.add('active');
+      }
+    }
+  }
+}
+
+// ----------    new setup end   ------------

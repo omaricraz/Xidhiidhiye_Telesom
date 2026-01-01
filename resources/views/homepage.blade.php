@@ -131,7 +131,7 @@
           </div>
           <div class="about-card">
             <div class="about-image">
-              <img src="https://images.unsplash.com/photo-1556761175-b3da7378c3a2?w=400&h=300&fit=crop&q=80" alt="Team collaboration" />
+              <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=300&fit=crop&q=80" alt="Team collaboration" />
             </div>
             <div class="about-card-content">
               <div class="about-icon">
@@ -339,13 +339,19 @@
     <script>
       // Theme toggle functionality
       document.addEventListener('DOMContentLoaded', function() {
-        var currentTheme = localStorage.getItem('theme') || 'light';
-        applyTheme(currentTheme);
-        
         var themeToggle = document.getElementById('theme-toggle');
         var themeIcon = document.getElementById('theme-icon');
         var heroLogo = document.getElementById('hero-logo');
         var footerLogo = document.getElementById('footer-logo');
+        
+        // Get current theme from body attribute (set by inline script) or localStorage
+        var body = document.body;
+        var currentTheme = body.getAttribute('data-pc-theme') || localStorage.getItem('theme') || 'light';
+        if (currentTheme && currentTheme !== 'default') {
+          applyTheme(currentTheme);
+        } else {
+          applyTheme('light');
+        }
         
         // Initialize icon and logos based on current theme
         if (themeIcon) {
@@ -378,20 +384,16 @@
         function updateLogos(theme) {
           // Update hero logo
           if (heroLogo) {
-            if (theme === 'dark') {
-              heroLogo.src = '/build/images/xidhiidhiye-logo-purple.svg';
-            } else {
-              heroLogo.src = '/build/images/xidhiidhiye-logo.svg';
-            }
+            heroLogo.src = theme === 'dark' 
+              ? '/build/images/xidhiidhiye-logo-purple.svg' 
+              : '/build/images/xidhiidhiye-logo.svg';
           }
           
           // Update footer logo
           if (footerLogo) {
-            if (theme === 'dark') {
-              footerLogo.src = '/build/images/xidhiidhiye-logo-purple.svg';
-            } else {
-              footerLogo.src = '/build/images/xidhiidhiye-logo.svg';
-            }
+            footerLogo.src = theme === 'dark' 
+              ? '/build/images/xidhiidhiye-logo-purple.svg' 
+              : '/build/images/xidhiidhiye-logo.svg';
           }
         }
         
