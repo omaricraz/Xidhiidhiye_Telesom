@@ -7,6 +7,7 @@ use App\Http\Controllers\ManagerDashboardController;
 use App\Http\Controllers\NoticeboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QAController;
+use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WhoIsWhoController;
@@ -97,6 +98,17 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('{question}', [QAController::class, 'destroy'])->name('destroy');
     });
 
+    // Reports routes
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/', [ReportsController::class, 'index'])->name('index');
+        Route::get('tasks', [ReportsController::class, 'taskManagement'])->name('tasks');
+        Route::get('users', [ReportsController::class, 'userActivity'])->name('users');
+        Route::get('learning', [ReportsController::class, 'learningProgress'])->name('learning');
+        Route::get('teams', [ReportsController::class, 'teamPerformance'])->name('teams');
+    });
+
     // Template pages route disabled - uncomment below to enable template demo pages
     // Route::get('{routeName}/{name?}', [HomeController::class, 'pageView']);
+    // Template pages route disabled - uncomment below to enable template demo pages
+    Route::get('{routeName}/{name?}', [HomeController::class, 'pageView']);
 });
