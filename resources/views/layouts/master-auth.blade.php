@@ -9,7 +9,7 @@
     @include('layouts/head-css')
   </head>
 <!-- [Body] Start -->
-<body class="@yield('bodyClass')" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme="light" data-pc-preset="preset-1">
+<body class="@yield('bodyClass')" data-pc-layout="{{config('app.theme_layout')}}" data-pc-direction="{{config('app.rtlflag')}}" data-pc-theme="{{config('app.dark_layout') ?  config('app.dark_layout') == 'default' ?? 'dark' : 'light'}}" data-pc-preset="{{config('app.preset_theme')}}">
 <script>
   // Apply theme from localStorage immediately to prevent flash of wrong theme
   (function() {

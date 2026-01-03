@@ -44,10 +44,16 @@
 @endif
 @if (config('app.theme_layout') == 'default')
 <script>
+  // #region agent log
+  fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'footer-js.blade.php:46',message:'footer script: default layout',data:{configValue:'{{config('app.theme_layout')}}'},sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+  // #endregion
   main_layout_change('default');
 </script>
 @elseif(config('app.theme_layout') != "")
 <script>
-  main_layout_change('dark');
+  // #region agent log
+  fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'footer-js.blade.php:50',message:'footer script: calling main_layout_change',data:{configValue:'{{config('app.theme_layout')}}',calledWith:'{{config('app.theme_layout')}}'},sessionId:'debug-session',runId:'post-fix',hypothesisId:'D'})}).catch(()=>{});
+  // #endregion
+  main_layout_change('{{config('app.theme_layout')}}');
 </script>
 @endif

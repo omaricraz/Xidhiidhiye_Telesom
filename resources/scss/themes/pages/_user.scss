@@ -257,15 +257,10 @@
 
 /** Profile Card Gradient - Theme Aware */
 .profile-card-gradient {
-  // Dark theme: purple gradient (default)
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  // Light theme: green gradient (default)
+  background: linear-gradient(135deg, #008000 0%, #92CF01 100%);
   
-  // Light theme: green gradient
-  body[data-pc-theme="light"] & {
-    background: linear-gradient(135deg, #008000 0%, #92CF01 100%);
-  }
-  
-  // Dark theme: purple gradient (explicit)
+  // Dark theme: purple gradient
   body[data-pc-theme="dark"] & {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   }

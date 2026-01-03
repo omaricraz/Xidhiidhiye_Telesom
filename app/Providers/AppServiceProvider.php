@@ -45,5 +45,29 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(191);
+        
+        // #region agent log
+        $logPath = base_path('.cursor/debug.log');
+        $dbConfig = config('database');
+        $defaultConn = $dbConfig['default'] ?? 'unknown';
+        $mysqlConfig = $dbConfig['connections']['mysql'] ?? [];
+        $logData = [
+            'sessionId' => 'debug-session',
+            'runId' => 'run1',
+            'hypothesisId' => 'D',
+            'location' => 'app/Providers/AppServiceProvider.php:48',
+            'message' => 'Resolved database configuration',
+            'data' => [
+                'default_connection' => $defaultConn,
+                'mysql_host' => $mysqlConfig['host'] ?? 'NOT_SET',
+                'mysql_port' => $mysqlConfig['port'] ?? 'NOT_SET',
+                'mysql_database' => $mysqlConfig['database'] ?? 'NOT_SET',
+                'mysql_username' => $mysqlConfig['username'] ?? 'NOT_SET',
+                'mysql_password_set' => !empty($mysqlConfig['password']),
+            ],
+            'timestamp' => time() * 1000,
+        ];
+        file_put_contents($logPath, json_encode($logData) . "\n", FILE_APPEND);
+        // #endregion
     }
 }

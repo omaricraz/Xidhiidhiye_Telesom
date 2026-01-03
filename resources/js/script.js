@@ -192,6 +192,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // layout options (when click customizer layout options according to that set value in local storage)
+  // #region agent log
+  fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:195',message:'Before setLayout() call',data:{bodyLayout:document.body.getAttribute('data-pc-layout'),localStorageLayout:localStorage.getItem('layout')},sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+  // #endregion
   setLayout();
   var if_layout = document.querySelectorAll('.theme-main-layout');
   var layoutValue = 'vertical';
@@ -238,11 +241,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Function to set the layout based on data stored in localStorage
 function setLayout() {
+  // #region agent log
+  fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:240',message:'setLayout() called',data:{timestamp:Date.now()},sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+  // #endregion
   var layout = localStorage.getItem('layout'); // Retrieve layout data from localStorage
+  // #region agent log
+  fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:242',message:'localStorage layout value',data:{layout:layout},sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+  // #endregion
 
-  // If no layout data found in localStorage, set default layout to 'color-header'
-  if (layout === null || layout === '') {
-    layout = 'color-header';
+  // Always prefer body attribute (set by server config) over localStorage to ensure consistency
+  var bodyLayout = document.body.getAttribute('data-pc-layout');
+  if (bodyLayout) {
+    // Use the layout from body attribute (server config) and update localStorage to match
+    layout = bodyLayout;
+    // #region agent log
+    fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:252',message:'Using layout from body attribute (server config)',data:{layout:layout,localStorageValue:localStorage.getItem('layout')},sessionId:'debug-session',runId:'post-fix',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
+    localStorage.setItem('layout', layout);
+  } else if (layout === null || layout === '') {
+    // Fallback: if no body attribute and no localStorage, use 'vertical' as default
+    layout = 'vertical';
+    // #region agent log
+    fetch('http://127.0.0.1:7250/ingest/4c46ff09-2365-4ec6-80d2-9b8f68ecc527',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:258',message:'Fallback to vertical layout',data:{layout:layout},sessionId:'debug-session',runId:'post-fix',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
     localStorage.setItem('layout', layout);
   }
 
