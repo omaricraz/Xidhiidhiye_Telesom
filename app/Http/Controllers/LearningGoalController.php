@@ -32,12 +32,19 @@ class LearningGoalController extends Controller
             $goals = $query->whereNull('team_id')->latest()->get();
         }
 
-        // Get user progress for each goal
-        $userProgress = UserLearningProgress::where('user_id', $user->id)
-            ->pluck('is_completed', 'goal_id')
+        // Get user progress for each goal with completion dates
+        $userProgressData = UserLearningProgress::where('user_id', $user->id)
+            ->get()
+            ->keyBy('goal_id')
+            ->map(function($progress) {
+                return [
+                    'is_completed' => $progress->is_completed,
+                    'completed_at' => $progress->completed_at,
+                ];
+            })
             ->toArray();
 
-        return view('onboarding.index', compact('goals', 'userProgress'));
+        return view('onboarding.index', compact('goals', 'userProgressData'));
     }
 
     /**
