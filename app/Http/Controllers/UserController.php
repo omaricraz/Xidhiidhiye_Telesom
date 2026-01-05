@@ -51,9 +51,11 @@ class UserController extends Controller
             'team_id' => 'nullable|exists:teams,id',
             'tech_stack' => 'nullable|string',
             'status_emoji' => 'nullable|string|max:10',
+            'status' => 'nullable|in:active,holiday,sick_leave,remote,offline',
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
+        $validated['status'] = $validated['status'] ?? 'active';
 
         User::create($validated);
 
@@ -95,6 +97,7 @@ class UserController extends Controller
             'team_id' => 'nullable|exists:teams,id',
             'tech_stack' => 'nullable|string',
             'status_emoji' => 'nullable|string|max:10',
+            'status' => 'nullable|in:active,holiday,sick_leave,remote,offline',
         ]);
 
         if (empty($validated['password'])) {

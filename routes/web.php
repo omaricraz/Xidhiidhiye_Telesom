@@ -80,8 +80,9 @@ Route::middleware(['auth'])->group(function () {
     // Who's Who route
     Route::get('whoswho', [WhoIsWhoController::class, 'index'])->name('whoswho.index');
 
-    // Profile route
+    // Profile routes
     Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
 
     // Noticeboard routes
     Route::get('noticeboard', [NoticeboardController::class, 'index'])->name('noticeboard.index');

@@ -80,70 +80,107 @@
                 <h5>Personal Information</h5>
               </div>
               <div class="card-body">
-                <div class="row mb-3">
-                  <div class="col-sm-4">
-                    <strong>Name:</strong>
+                @if(session('success'))
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
-                  <div class="col-sm-8">
-                    {{ $user->name }}
+                @endif
+                <form action="{{ route('profile.update') }}" method="POST">
+                  @csrf
+                  @method('PUT')
+                  <div class="row mb-3">
+                    <div class="col-sm-4">
+                      <strong>Name:</strong>
+                    </div>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $user->name) }}" required>
+                      @error('name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
+                    </div>
                   </div>
-                </div>
-                <hr>
-                <div class="row mb-3">
-                  <div class="col-sm-4">
-                    <strong>Email Address:</strong>
+                  <hr>
+                  <div class="row mb-3">
+                    <div class="col-sm-4">
+                      <strong>Email Address:</strong>
+                    </div>
+                    <div class="col-sm-8">
+                      <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $user->email) }}" required>
+                      @error('email')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
+                    </div>
                   </div>
-                  <div class="col-sm-8">
-                    {{ $user->email }}
+                  <hr>
+                  <div class="row mb-3">
+                    <div class="col-sm-4">
+                      <strong>Status:</strong>
+                    </div>
+                    <div class="col-sm-8">
+                      <select class="form-select @error('status') is-invalid @enderror" name="status" required>
+                        <option value="active" {{ old('status', $user->status ?? 'active') === 'active' ? 'selected' : '' }}>Active</option>
+                        <option value="holiday" {{ old('status', $user->status ?? 'active') === 'holiday' ? 'selected' : '' }}>On Holiday</option>
+                        <option value="sick_leave" {{ old('status', $user->status ?? 'active') === 'sick_leave' ? 'selected' : '' }}>Sick Leave</option>
+                        <option value="remote" {{ old('status', $user->status ?? 'active') === 'remote' ? 'selected' : '' }}>Remote</option>
+                        <option value="offline" {{ old('status', $user->status ?? 'active') === 'offline' ? 'selected' : '' }}>Offline</option>
+                      </select>
+                      @error('status')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
+                    </div>
                   </div>
-                </div>
-                <hr>
-                <div class="row mb-3">
-                  <div class="col-sm-4">
-                    <strong>Role:</strong>
+                  <hr>
+                  <div class="row mb-3">
+                    <div class="col-sm-4">
+                      <strong>Role:</strong>
+                    </div>
+                    <div class="col-sm-8">
+                      <span class="badge bg-light-{{ $user->role === 'Manager' ? 'danger' : ($user->role === 'Team_Lead' ? 'warning' : 'primary') }}">
+                        {{ $user->role }}
+                      </span>
+                    </div>
                   </div>
-                  <div class="col-sm-8">
-                    <span class="badge bg-light-{{ $user->role === 'Manager' ? 'danger' : ($user->role === 'Team_Lead' ? 'warning' : 'primary') }}">
-                      {{ $user->role }}
-                    </span>
+                  <hr>
+                  <div class="row mb-3">
+                    <div class="col-sm-4">
+                      <strong>Team:</strong>
+                    </div>
+                    <div class="col-sm-8">
+                      {{ $user->team->name ?? 'N/A' }}
+                    </div>
                   </div>
-                </div>
-                <hr>
-                <div class="row mb-3">
-                  <div class="col-sm-4">
-                    <strong>Team:</strong>
+                  <hr>
+                  <div class="row mb-3">
+                    <div class="col-sm-4">
+                      <strong>Status Emoji:</strong>
+                    </div>
+                    <div class="col-sm-8">
+                      <span style="font-size: 24px;">{{ $user->status_emoji ?? 'N/A' }}</span>
+                    </div>
                   </div>
-                  <div class="col-sm-8">
-                    {{ $user->team->name ?? 'N/A' }}
+                  <hr>
+                  <div class="row mb-3">
+                    <div class="col-sm-4">
+                      <strong>User ID:</strong>
+                    </div>
+                    <div class="col-sm-8">
+                      #{{ $user->id }}
+                    </div>
                   </div>
-                </div>
-                <hr>
-                <div class="row mb-3">
-                  <div class="col-sm-4">
-                    <strong>Status Emoji:</strong>
+                  <hr>
+                  <div class="row mb-3">
+                    <div class="col-sm-4">
+                      <strong>Member Since:</strong>
+                    </div>
+                    <div class="col-sm-8">
+                      {{ $user->created_at->format('F d, Y') }}
+                    </div>
                   </div>
-                  <div class="col-sm-8">
-                    <span style="font-size: 24px;">{{ $user->status_emoji ?? 'N/A' }}</span>
+                  <div class="text-end mt-3">
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
                   </div>
-                </div>
-                <hr>
-                <div class="row mb-3">
-                  <div class="col-sm-4">
-                    <strong>User ID:</strong>
-                  </div>
-                  <div class="col-sm-8">
-                    #{{ $user->id }}
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-4">
-                    <strong>Member Since:</strong>
-                  </div>
-                  <div class="col-sm-8">
-                    {{ $user->created_at->format('F d, Y') }}
-                  </div>
-                </div>
+                </form>
               </div>
             </div>
 
@@ -225,6 +262,7 @@
                 </div>
               </div>
             </div>
+
           </div>
         </div>
         <!-- [ Main Content ] end -->

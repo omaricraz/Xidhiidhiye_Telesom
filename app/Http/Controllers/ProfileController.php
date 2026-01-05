@@ -22,6 +22,24 @@ class ProfileController extends Controller
         
         return view('profile.show', compact('user'));
     }
+
+    /**
+     * Update the authenticated user's profile.
+     */
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+        
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'status' => 'required|in:active,holiday,sick_leave,remote,offline',
+        ]);
+        
+        $user->update($validated);
+        
+        return redirect()->route('profile.show')->with('success', 'Profile updated successfully.');
+    }
 }
 
 

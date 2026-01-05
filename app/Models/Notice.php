@@ -32,3 +32,4 @@ class Notice extends Model
 
 
 
+

@@ -98,6 +98,21 @@
                         @enderror
                       </div>
                     </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select class="form-select @error('status') is-invalid @enderror" name="status">
+                          <option value="active" {{ old('status', $user->status ?? 'active') === 'active' ? 'selected' : '' }}>Active</option>
+                          <option value="holiday" {{ old('status', $user->status ?? 'active') === 'holiday' ? 'selected' : '' }}>On Holiday</option>
+                          <option value="sick_leave" {{ old('status', $user->status ?? 'active') === 'sick_leave' ? 'selected' : '' }}>Sick Leave</option>
+                          <option value="remote" {{ old('status', $user->status ?? 'active') === 'remote' ? 'selected' : '' }}>Remote</option>
+                          <option value="offline" {{ old('status', $user->status ?? 'active') === 'offline' ? 'selected' : '' }}>Offline</option>
+                        </select>
+                        @error('status')
+                          <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                      </div>
+                    </div>
                   </div>
                   <div class="text-end">
                     <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Cancel</a>
