@@ -122,6 +122,12 @@ class ReportsController extends Controller
         $highPriorityTasks = $tasks->where('priority', 'High')->where('status', '!=', 'Completed')->count();
         $completionPercentage = $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100) : 0;
         
+        // Calculate productivity level
+        $productivityLevel = $this->calculateProductivityLevel($completionPercentage);
+        
+        // Calculate productivity trend (daily for the date range)
+        $productivityTrend = $this->calculateProductivityTrend($dateFrom, $dateTo, $query);
+        
         // Status distribution for chart
         $statusDistribution = [
             'Completed' => $completedTasks,
@@ -162,6 +168,8 @@ class ReportsController extends Controller
             'pendingTasks' => $pendingTasks,
             'highPriorityTasks' => $highPriorityTasks,
             'completionPercentage' => $completionPercentage,
+            'productivityLevel' => $productivityLevel,
+            'productivityTrend' => $productivityTrend,
             'statusDistribution' => $statusDistribution,
             'priorityDistribution' => $priorityDistribution,
             'teams' => $teams,
@@ -467,6 +475,8 @@ class ReportsController extends Controller
                     $dateTo . ' 23:59:59'
                 ])->count();
             
+            $productivityLevel = $this->calculateProductivityLevel($completionRate);
+            
             $teamPerformanceData[] = [
                 'team' => $team,
                 'member_count' => $team->members->count(),
@@ -477,6 +487,7 @@ class ReportsController extends Controller
                 'completed_goals' => $completedGoals,
                 'questions_asked' => $questionsAsked,
                 'productivity_score' => ($completionRate * 0.5) + (($completedGoals / max($totalGoals, 1)) * 50),
+                'productivity_level' => $productivityLevel,
             ];
         }
         
@@ -1185,6 +1196,113 @@ class ReportsController extends Controller
         ]);
         
         return $pdf->download('team_performance_report_' . date('Y-m-d_His') . '.pdf');
+    }
+    
+    /**
+     * Calculate productivity level based on completion percentage.
+     *
+     * @param int $completionPercentage
+     * @return array
+     */
+    private function calculateProductivityLevel($completionPercentage)
+    {
+        if ($completionPercentage >= 90) {
+            return [
+                'label' => 'Excellent',
+                'color' => 'success',
+                'icon' => 'ti-trophy',
+                'percentage' => $completionPercentage
+            ];
+        } elseif ($completionPercentage >= 75) {
+            return [
+                'label' => 'Very Good',
+                'color' => 'info',
+                'icon' => 'ti-star',
+                'percentage' => $completionPercentage
+            ];
+        } elseif ($completionPercentage >= 60) {
+            return [
+                'label' => 'Good',
+                'color' => 'primary',
+                'icon' => 'ti-thumb-up',
+                'percentage' => $completionPercentage
+            ];
+        } elseif ($completionPercentage >= 40) {
+            return [
+                'label' => 'Average',
+                'color' => 'warning',
+                'icon' => 'ti-alert-circle',
+                'percentage' => $completionPercentage
+            ];
+        } else {
+            return [
+                'label' => 'Needs Improvement',
+                'color' => 'danger',
+                'icon' => 'ti-alert-triangle',
+                'percentage' => $completionPercentage
+            ];
+        }
+    }
+    
+    /**
+     * Calculate productivity trend over time.
+     *
+     * @param string $dateFrom
+     * @param string $dateTo
+     * @param \Illuminate\Database\Eloquent\Builder $baseQuery
+     * @return array
+     */
+    private function calculateProductivityTrend($dateFrom, $dateTo, $baseQuery)
+    {
+        $trend = [];
+        $startDate = \Carbon\Carbon::parse($dateFrom);
+        $endDate = \Carbon\Carbon::parse($dateTo);
+        $daysDiff = $startDate->diffInDays($endDate);
+        
+        // If range is more than 30 days, group by week, otherwise by day
+        $groupBy = $daysDiff > 30 ? 'week' : 'day';
+        
+        $currentDate = $startDate->copy();
+        
+        while ($currentDate <= $endDate) {
+            if ($groupBy === 'week') {
+                $weekStart = $currentDate->copy()->startOfWeek();
+                $weekEnd = $currentDate->copy()->endOfWeek();
+                if ($weekEnd > $endDate) {
+                    $weekEnd = $endDate;
+                }
+                
+                $periodTasks = (clone $baseQuery)->whereBetween('created_at', [
+                    $weekStart->format('Y-m-d') . ' 00:00:00',
+                    $weekEnd->format('Y-m-d') . ' 23:59:59'
+                ])->get();
+                
+                $periodCompleted = $periodTasks->where('status', 'Completed')->count();
+                $periodTotal = $periodTasks->count();
+                $periodPercentage = $periodTotal > 0 ? round(($periodCompleted / $periodTotal) * 100) : 0;
+                
+                $trend[] = [
+                    'date' => $weekStart->format('M d'),
+                    'percentage' => $periodPercentage
+                ];
+                
+                $currentDate->addWeek();
+            } else {
+                $dayTasks = (clone $baseQuery)->whereDate('created_at', $currentDate->format('Y-m-d'))->get();
+                $dayCompleted = $dayTasks->where('status', 'Completed')->count();
+                $dayTotal = $dayTasks->count();
+                $dayPercentage = $dayTotal > 0 ? round(($dayCompleted / $dayTotal) * 100) : 0;
+                
+                $trend[] = [
+                    'date' => $currentDate->format('M d'),
+                    'percentage' => $dayPercentage
+                ];
+                
+                $currentDate->addDay();
+            }
+        }
+        
+        return $trend;
     }
 
 }

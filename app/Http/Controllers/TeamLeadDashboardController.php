@@ -9,7 +9,7 @@ use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ManagerDashboardController extends Controller
+class TeamLeadDashboardController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -22,25 +22,43 @@ class ManagerDashboardController extends Controller
     }
 
     /**
-     * Show the manager dashboard.
+     * Show the team lead dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
-        $manager = Auth::user();
+        $teamLead = Auth::user();
         
-        // Get all employees excluding the manager
-        $totalEmployees = User::where('id', '!=', $manager->id)->count();
+        // Ensure user is a team lead with a team
+        if (!$teamLead->isTeamLead() || !$teamLead->team_id) {
+            abort(403, 'Access denied. Team lead access required.');
+        }
         
-        // Get interns count (excluding manager)
-        $internsCount = User::where('role', 'Intern')
-            ->where('id', '!=', $manager->id)
+        // Get team
+        $team = Team::find($teamLead->team_id);
+        if (!$team) {
+            abort(404, 'Team not found.');
+        }
+        
+        // Get all team member IDs (including the team lead)
+        $teamMemberIds = User::where('team_id', $teamLead->team_id)->pluck('id');
+        
+        // Get team members excluding the team lead
+        $totalEmployees = User::where('team_id', $teamLead->team_id)
+            ->where('id', '!=', $teamLead->id)
             ->count();
         
-        // Get permanent employees count (Employee and Team_Lead roles, excluding manager)
-        $permanentCount = User::whereIn('role', ['Employee', 'Team_Lead'])
-            ->where('id', '!=', $manager->id)
+        // Get interns count in team (excluding team lead)
+        $internsCount = User::where('team_id', $teamLead->team_id)
+            ->where('role', 'Intern')
+            ->where('id', '!=', $teamLead->id)
+            ->count();
+        
+        // Get permanent employees count in team (Employee role, excluding team lead)
+        $permanentCount = User::where('team_id', $teamLead->team_id)
+            ->where('role', 'Employee')
+            ->where('id', '!=', $teamLead->id)
             ->count();
         
         // Calculate percentages
@@ -48,42 +66,60 @@ class ManagerDashboardController extends Controller
         $internPercentage = $totalForPercentage > 0 ? round(($internsCount / $totalForPercentage) * 100) : 0;
         $permanentPercentage = $totalForPercentage > 0 ? round(($permanentCount / $totalForPercentage) * 100) : 0;
         
-        // Tasks statistics
-        $totalTasks = Task::count();
-        $completedTasks = Task::where('status', 'Completed')->count();
-        $inProgressTasks = Task::where('status', 'In_Progress')->count();
-        $pendingTasks = Task::where('status', 'Pending')->count();
-        $highPriorityTasks = Task::where('priority', 'High')->where('status', '!=', 'Completed')->count();
+        // Tasks statistics - only tasks from team members
+        $teamTasksQuery = Task::where(function($q) use ($teamMemberIds, $teamLead) {
+            $q->whereIn('assignee_id', $teamMemberIds)
+              ->orWhereIn('creator_id', $teamMemberIds)
+              ->orWhere('creator_id', $teamLead->id);
+        });
+        
+        $totalTasks = $teamTasksQuery->count();
+        $completedTasks = (clone $teamTasksQuery)->where('status', 'Completed')->count();
+        $inProgressTasks = (clone $teamTasksQuery)->where('status', 'In_Progress')->count();
+        $pendingTasks = (clone $teamTasksQuery)->where('status', 'Pending')->count();
+        $highPriorityTasks = (clone $teamTasksQuery)->where('priority', 'High')->where('status', '!=', 'Completed')->count();
         $taskCompletionPercentage = $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100) : 0;
         
         // Calculate productivity level based on completion rate
         $productivityLevel = $this->calculateProductivityLevel($taskCompletionPercentage);
         
-        // Teams statistics
-        $totalTeams = Team::count();
-        $teamLeadsCount = User::where('role', 'Team_Lead')
-            ->where('id', '!=', $manager->id)
-            ->count();
-        
-        // Active employees (assuming status field exists)
-        $activeEmployees = User::where('id', '!=', $manager->id)
+        // Active employees in team (excluding team lead)
+        $activeEmployees = User::where('team_id', $teamLead->team_id)
+            ->where('id', '!=', $teamLead->id)
             ->where(function($query) {
                 $query->where('status', 'active')
                     ->orWhereNull('status');
             })
             ->count();
         
-        // Questions statistics
-        $totalQuestions = Question::count();
-        $recentQuestions = Question::with(['creator', 'team'])->latest()->take(5)->get();
+        // Questions statistics - team questions and global questions
+        $totalQuestions = Question::where(function($q) use ($teamLead) {
+            $q->where('team_id', $teamLead->team_id)
+              ->orWhereNull('team_id'); // Global questions
+        })->count();
         
-        // Recent tasks
-        $recentTasks = Task::with(['creator', 'assignee'])
+        $recentQuestions = Question::with(['creator', 'team'])
+            ->where(function($q) use ($teamLead) {
+                $q->where('team_id', $teamLead->team_id)
+                  ->orWhereNull('team_id'); // Global questions
+            })
             ->latest()
             ->take(5)
             ->get();
         
-        return view('manager.dashboard', [
+        // Recent tasks from team
+        $recentTasks = Task::with(['creator', 'assignee'])
+            ->where(function($q) use ($teamMemberIds, $teamLead) {
+                $q->whereIn('assignee_id', $teamMemberIds)
+                  ->orWhereIn('creator_id', $teamMemberIds)
+                  ->orWhere('creator_id', $teamLead->id);
+            })
+            ->latest()
+            ->take(5)
+            ->get();
+        
+        return view('teamlead.dashboard', [
+            'team' => $team,
             'totalEmployees' => $totalEmployees,
             'internsCount' => $internsCount,
             'permanentCount' => $permanentCount,
@@ -96,8 +132,6 @@ class ManagerDashboardController extends Controller
             'highPriorityTasks' => $highPriorityTasks,
             'taskCompletionPercentage' => $taskCompletionPercentage,
             'productivityLevel' => $productivityLevel,
-            'totalTeams' => $totalTeams,
-            'teamLeadsCount' => $teamLeadsCount,
             'activeEmployees' => $activeEmployees,
             'totalQuestions' => $totalQuestions,
             'recentQuestions' => $recentQuestions,

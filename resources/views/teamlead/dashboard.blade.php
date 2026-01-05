@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Employee Dashboard')
+@section('title', 'Team Lead Dashboard')
 
 @section('css')
 <link rel="stylesheet" href="/build/css/plugins/datepicker-bs5.min.css" />
@@ -8,27 +8,81 @@
 
 @section('content')
 
-<x-breadcrumb item="Dashboard" active="My Dashboard"/>
+<x-breadcrumb item="Dashboard" active="Team Lead Dashboard"/>
 
         <!-- [ Main Content ] start -->
         <div class="row">
-          <!-- Total Tasks Card -->
+          <!-- Team Members Count Card -->
+          <div class="col-xl-3 col-md-6">
+            <div class="card">
+              <div class="card-body pb-0">
+                <div class="d-flex align-items-center justify-content-between">
+                  <h5 class="mb-0">Team members</h5>
+                  <i class="ti ti-users f-24 text-primary"></i>
+                </div>
+                <div class="mt-3">
+                  <h2 class="mb-0">{{ $totalEmployees }}</h2>
+                  <p class="text-muted mb-0">Team Members</p>
+                  <small class="text-muted">Excluding yourself</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Team Members Count Card End -->
+
+          <!-- Tasks Count Card -->
           <div class="col-xl-3 col-md-6">
             <div class="card">
               <div class="card-body pb-0">
                 <div class="d-flex align-items-center justify-content-between">
                   <h5 class="mb-0">Total Tasks</h5>
-                  <i class="ti ti-checklist f-24 text-primary"></i>
+                  <i class="ti ti-checklist f-24 text-success"></i>
                 </div>
                 <div class="mt-3">
                   <h2 class="mb-0">{{ $totalTasks }}</h2>
-                  <p class="text-muted mb-0">My Tasks</p>
+                  <p class="text-muted mb-0">Team Tasks</p>
                   <small class="text-muted">{{ $taskCompletionPercentage }}% Completed</small>
                 </div>
               </div>
             </div>
           </div>
-          <!-- Total Tasks Card End -->
+          <!-- Tasks Count Card End -->
+
+          <!-- Team Name Card -->
+          <div class="col-xl-3 col-md-6">
+            <div class="card">
+              <div class="card-body pb-0">
+                <div class="d-flex align-items-center justify-content-between">
+                  <h5 class="mb-0">Team</h5>
+                  <i class="ti ti-building f-24 text-info"></i>
+                </div>
+                <div class="mt-3">
+                  <h2 class="mb-0">{{ $team->name }}</h2>
+                  <p class="text-muted mb-0">Your Team</p>
+                  <small class="text-muted">Team Lead Dashboard</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Team Name Card End -->
+
+          <!-- Active Employees Card -->
+          <div class="col-xl-3 col-md-6">
+            <div class="card">
+              <div class="card-body pb-0">
+                <div class="d-flex align-items-center justify-content-between">
+                  <h5 class="mb-0">Active Employees</h5>
+                  <i class="ti ti-user-check f-24 text-warning"></i>
+                </div>
+                <div class="mt-3">
+                  <h2 class="mb-0">{{ $activeEmployees }}</h2>
+                  <p class="text-muted mb-0">Currently Active</p>
+                  <small class="text-muted">Out of {{ $totalEmployees }} total</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Active Employees Card End -->
 
           <!-- Productivity Level Card -->
           <div class="col-xl-3 col-md-6">
@@ -40,7 +94,7 @@
                 </div>
                 <div class="mt-3">
                   <h2 class="mb-0 text-{{ $productivityLevel['color'] }}">{{ $productivityLevel['label'] }}</h2>
-                  <p class="text-muted mb-0">Performance Level</p>
+                  <p class="text-muted mb-0">Team Performance</p>
                   <small class="text-muted">{{ $productivityLevel['percentage'] }}% Completion Rate</small>
                 </div>
               </div>
@@ -48,44 +102,8 @@
           </div>
           <!-- Productivity Level Card End -->
 
-          <!-- Completed Tasks Card -->
-          <div class="col-xl-3 col-md-6">
-            <div class="card">
-              <div class="card-body pb-0">
-                <div class="d-flex align-items-center justify-content-between">
-                  <h5 class="mb-0">Completed</h5>
-                  <i class="ti ti-check f-24 text-success"></i>
-                </div>
-                <div class="mt-3">
-                  <h2 class="mb-0">{{ $completedTasks }}</h2>
-                  <p class="text-muted mb-0">Tasks Done</p>
-                  <small class="text-muted">Out of {{ $totalTasks }} total</small>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Completed Tasks Card End -->
-
-          <!-- High Priority Tasks Card -->
-          <div class="col-xl-3 col-md-6">
-            <div class="card">
-              <div class="card-body pb-0">
-                <div class="d-flex align-items-center justify-content-between">
-                  <h5 class="mb-0">High Priority</h5>
-                  <i class="ti ti-alert-triangle f-24 text-danger"></i>
-                </div>
-                <div class="mt-3">
-                  <h2 class="mb-0">{{ $highPriorityTasks }}</h2>
-                  <p class="text-muted mb-0">Urgent Tasks</p>
-                  <small class="text-muted">Requires attention</small>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- High Priority Tasks Card End -->
-
           <!-- Tasks Status Overview Card -->
-          <div class="col-lg-8 col-md-12">
+          <div class="col-lg-6 col-md-12">
             <div class="card">
               <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between mb-3">
@@ -132,8 +150,8 @@
                         <i class="ti ti-alert-triangle f-18 text-danger"></i>
                       </div>
                       <div>
-                        <h6 class="mb-0">{{ $overdueTasks }}</h6>
-                        <small class="text-muted">Overdue</small>
+                        <h6 class="mb-0">{{ $highPriorityTasks }}</h6>
+                        <small class="text-muted">High Priority</small>
                       </div>
                     </div>
                   </div>
@@ -158,16 +176,20 @@
                 </div>
                 <div class="mb-3">
                   <div class="d-flex align-items-center justify-content-between mb-2">
-                    <span class="text-muted">Assigned to Me</span>
-                    <strong>{{ $assignedToMe }}</strong>
+                    <span class="text-muted">Total Tasks</span>
+                    <strong>{{ $totalTasks }}</strong>
                   </div>
                   <div class="d-flex align-items-center justify-content-between mb-2">
-                    <span class="text-muted">Created by Me</span>
-                    <strong>{{ $createdByMe }}</strong>
+                    <span class="text-muted">Completed</span>
+                    <strong>{{ $completedTasks }}</strong>
                   </div>
                   <div class="d-flex align-items-center justify-content-between mb-2">
-                    <span class="text-muted">Avg. Completion</span>
-                    <strong>{{ $averageCompletionDays }} days</strong>
+                    <span class="text-muted">In Progress</span>
+                    <strong>{{ $inProgressTasks }}</strong>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-muted">Pending</span>
+                    <strong>{{ $pendingTasks }}</strong>
                   </div>
                   <hr>
                   <div class="d-flex align-items-center justify-content-between">
@@ -181,50 +203,40 @@
           </div>
           <!-- Productivity Metrics Card End -->
 
-          <!-- Task Priority Distribution Card -->
-          <div class="col-lg-6 col-md-12">
+          <!-- Membership State Card -->
+          <div class="col-lg-8 col-md-12">
             <div class="card">
               <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between mb-3">
-                  <h5 class="mb-0">Task Priority Distribution</h5>
+                  <h5 class="mb-0">Membership State</h5>
+                  <select class="form-select rounded-3 form-select-sm w-auto">
+                    <option>Today</option>
+                    <option>Weekly</option>
+                    <option selected>Monthly</option>
+                  </select>
                 </div>
                 <div class="row">
-                  <div class="col-4 mb-3">
-                    <div class="text-center">
-                      <div class="avtar avtar-lg bg-light-danger mx-auto mb-2">
-                        <i class="ti ti-alert-triangle f-24 text-danger"></i>
-                      </div>
-                      <h4 class="mb-0">{{ $highPriorityCount }}</h4>
-                      <small class="text-muted">High Priority</small>
-                    </div>
+                  <div class="col-md-6">
+                    <div id="membership-state-chart"></div>
                   </div>
-                  <div class="col-4 mb-3">
-                    <div class="text-center">
-                      <div class="avtar avtar-lg bg-light-warning mx-auto mb-2">
-                        <i class="ti ti-alert-circle f-24 text-warning"></i>
-                      </div>
-                      <h4 class="mb-0">{{ $mediumPriorityCount }}</h4>
-                      <small class="text-muted">Medium Priority</small>
+                  <div class="col-md-6">
+                    <div class="rounded border p-3 mb-2">
+                      <span class="d-block"><i class="fas fa-circle text-primary f-10 m-r-10"></i>Interns ({{ $internPercentage }}%)</span>
+                      <small class="text-muted d-block mt-1">{{ $internsCount }} employees</small>
                     </div>
-                  </div>
-                  <div class="col-4 mb-3">
-                    <div class="text-center">
-                      <div class="avtar avtar-lg bg-light-info mx-auto mb-2">
-                        <i class="ti ti-info-circle f-24 text-info"></i>
-                      </div>
-                      <h4 class="mb-0">{{ $lowPriorityCount }}</h4>
-                      <small class="text-muted">Low Priority</small>
+                    <div class="rounded border p-3">
+                      <span class="d-block"><i class="fas fa-circle text-primary text-opacity-25 f-10 m-r-10"></i>Permanent Employees ({{ $permanentPercentage }}%)</span>
+                      <small class="text-muted d-block mt-1">{{ $permanentCount }} employees</small>
                     </div>
                   </div>
                 </div>
-                <div id="priority-chart"></div>
               </div>
             </div>
           </div>
-          <!-- Task Priority Distribution Card End -->
+          <!-- Membership State Card End -->
 
           <!-- Recent Tasks Card -->
-          <div class="col-lg-6 col-md-12">
+          <div class="col-lg-12 col-md-12">
             <div class="card">
               <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between mb-3">
@@ -237,6 +249,7 @@
                     <thead>
                       <tr>
                         <th>Task</th>
+                        <th>Assignee</th>
                         <th>Priority</th>
                         <th>Status</th>
                         <th>Created</th>
@@ -252,6 +265,18 @@
                               <small class="text-muted">{{ Str::limit($task->description, 50) }}</small>
                             </div>
                           </div>
+                        </td>
+                        <td>
+                          @if($task->assignee)
+                          <div class="d-flex align-items-center">
+                            <div class="avtar avtar-xs me-2">
+                              <img src="{{ $task->assignee->profile_image ? asset('storage/' . $task->assignee->profile_image) : asset('build/images/user/avatar-1.jpg') }}" alt="{{ $task->assignee->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
+                            </div>
+                            <span>{{ $task->assignee->name }}</span>
+                          </div>
+                          @else
+                          <span class="text-muted">Unassigned</span>
+                          @endif
                         </td>
                         <td>
                           @if($task->priority === 'High')
@@ -300,12 +325,11 @@
         setTimeout(function () {
           // Detect theme from body attribute
           var currentTheme = document.getElementsByTagName('body')[0].getAttribute('data-pc-theme') || 'light';
-          var chartColor = currentTheme === 'dark' ? '#9c27b0' : '#28a745';
-          var trackColor = currentTheme === 'dark' ? '#9c27b025' : '#28a74525';
+          var chartColor = currentTheme === 'dark' ? '#9c27b0' : '#28a745'; // Purple for dark, green for light
+          var trackColor = currentTheme === 'dark' ? '#9c27b025' : '#28a74525'; // Purple for dark, green for light
           
-          // Productivity Chart
-          var productivityChartOption = {
-            series: [{{ $taskCompletionPercentage }}],
+          var membership_state_chart_option = {
+            series: [{{ $internPercentage }}],
             chart: {
               type: 'radialBar',
               offsetY: -20,
@@ -349,42 +373,93 @@
             stroke: {
               lineCap: 'round'
             },
+            labels: ['Interns']
+          };
+          var chart = new ApexCharts(document.querySelector('#membership-state-chart'), membership_state_chart_option);
+          chart.render();
+          
+          // Watch for theme changes and update chart colors
+          var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+              if (mutation.type === 'attributes' && mutation.attributeName === 'data-pc-theme') {
+                var newTheme = document.getElementsByTagName('body')[0].getAttribute('data-pc-theme') || 'light';
+                var newChartColor = newTheme === 'dark' ? '#9c27b0' : '#28a745';
+                var newTrackColor = newTheme === 'dark' ? '#9c27b025' : '#28a74525';
+                
+                chart.updateOptions({
+                  colors: [newChartColor],
+                  plotOptions: {
+                    radialBar: {
+                      track: {
+                        background: newTrackColor
+                      }
+                    }
+                  }
+                });
+              }
+            });
+          });
+          
+          // Start observing the body element for theme changes
+          observer.observe(document.getElementsByTagName('body')[0], {
+            attributes: true,
+            attributeFilter: ['data-pc-theme']
+          });
+          
+          // Productivity Chart
+          var productivityChartOption = {
+            series: [{{ $taskCompletionPercentage }}],
+            chart: {
+              type: 'radialBar',
+              height: 200,
+              sparkline: {
+                enabled: true
+              }
+            },
+            colors: [chartColor],
+            plotOptions: {
+              radialBar: {
+                startAngle: -90,
+                endAngle: 90,
+                hollow: {
+                  margin: 0,
+                  size: '70%'
+                },
+                track: {
+                  background: trackColor,
+                  strokeWidth: '97%',
+                  margin: 5
+                },
+                dataLabels: {
+                  name: {
+                    show: false
+                  },
+                  value: {
+                    offsetY: -10,
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    formatter: function(val) {
+                      return val + '%';
+                    }
+                  }
+                }
+              }
+            },
+            grid: {
+              padding: {
+                top: -10
+              }
+            },
+            stroke: {
+              lineCap: 'round'
+            },
             labels: ['Productivity']
           };
           var productivityChart = new ApexCharts(document.querySelector('#productivity-chart'), productivityChartOption);
           productivityChart.render();
           
-          // Priority Distribution Chart
-          var priorityChartOption = {
-            series: [{{ $highPriorityCount }}, {{ $mediumPriorityCount }}, {{ $lowPriorityCount }}],
-            chart: {
-              type: 'donut',
-              height: 250
-            },
-            labels: ['High Priority', 'Medium Priority', 'Low Priority'],
-            colors: ['#dc3545', '#ffc107', '#17a2b8'],
-            legend: {
-              position: 'bottom'
-            },
-            plotOptions: {
-              pie: {
-                donut: {
-                  size: '70%'
-                }
-              }
-            },
-            dataLabels: {
-              enabled: true,
-              formatter: function (val) {
-                return val.toFixed(0) + '%';
-              }
-            }
-          };
-          var priorityChart = new ApexCharts(document.querySelector('#priority-chart'), priorityChartOption);
-          priorityChart.render();
-          
-          // Watch for theme changes and update chart colors
-          var observer = new MutationObserver(function(mutations) {
+          // Watch for theme changes and update productivity chart colors
+          var productivityObserver = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
               if (mutation.type === 'attributes' && mutation.attributeName === 'data-pc-theme') {
                 var newTheme = document.getElementsByTagName('body')[0].getAttribute('data-pc-theme') || 'light';
@@ -405,8 +480,7 @@
             });
           });
           
-          // Start observing the body element for theme changes
-          observer.observe(document.getElementsByTagName('body')[0], {
+          productivityObserver.observe(document.getElementsByTagName('body')[0], {
             attributes: true,
             attributeFilter: ['data-pc-theme']
           });
@@ -415,10 +489,5 @@
     </script>
 <!-- [Page Specific JS] end -->
 @endsection
-
-
-
-
-
 
 

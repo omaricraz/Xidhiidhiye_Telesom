@@ -40,7 +40,7 @@ class LoginController extends Controller
         if ($user->isManager()) {
             return redirect()->route('manager.dashboard');
         } elseif ($user->isTeamLead()) {
-            return redirect()->route('lead.tasks.index');
+            return redirect()->route('teamlead.dashboard');
         } elseif ($user->isIntern()) {
             return redirect()->route('employee.dashboard');
         } elseif ($user->isEmployee()) {

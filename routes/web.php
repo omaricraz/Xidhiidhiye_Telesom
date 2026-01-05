@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QAController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TeamLeadDashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WhoIsWhoController;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,7 @@ Route::get('/home', function () {
         if ($user->isManager()) {
             return redirect()->route('manager.dashboard');
         } elseif ($user->isTeamLead()) {
-            return redirect()->route('lead.tasks.index');
+            return redirect()->route('teamlead.dashboard');
         } elseif ($user->isIntern()) {
             return redirect()->route('employee.dashboard');
         } elseif ($user->isEmployee()) {
@@ -43,6 +44,9 @@ Route::get('/home', function () {
 Route::middleware(['auth'])->group(function () {
     // Manager Dashboard
     Route::get('manager/dashboard', [ManagerDashboardController::class, 'index'])->name('manager.dashboard');
+
+    // Team Lead Dashboard
+    Route::get('teamlead/dashboard', [TeamLeadDashboardController::class, 'index'])->name('teamlead.dashboard');
 
     // Employee Dashboard
     Route::get('employee/dashboard', [EmployeeDashboardController::class, 'index'])->name('employee.dashboard');

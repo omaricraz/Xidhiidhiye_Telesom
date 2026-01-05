@@ -164,16 +164,18 @@
                 </div>
               </div>
               
+              <!-- Productivity Level Card -->
               <div class="col-xl-3 col-md-6">
                 <div class="card">
                   <div class="card-body pb-0">
                     <div class="d-flex align-items-center justify-content-between">
-                      <h5 class="mb-0">High Priority</h5>
-                      <i class="ti ti-alert-triangle f-24 text-danger"></i>
+                      <h5 class="mb-0">Productivity</h5>
+                      <i class="ti {{ $productivityLevel['icon'] }} f-24 text-{{ $productivityLevel['color'] }}"></i>
                     </div>
                     <div class="mt-3">
-                      <h2 class="mb-0">{{ $highPriorityTasks }}</h2>
-                      <p class="text-muted mb-0">Urgent Tasks</p>
+                      <h2 class="mb-0 text-{{ $productivityLevel['color'] }}">{{ $productivityLevel['label'] }}</h2>
+                      <p class="text-muted mb-0">Performance Level</p>
+                      <small class="text-muted">{{ $productivityLevel['percentage'] }}% Completion</small>
                     </div>
                   </div>
                 </div>
@@ -202,6 +204,18 @@
                   </div>
                   <div class="card-body">
                     <div id="priority-chart"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Productivity Trend Chart -->
+              <div class="col-lg-12 col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h5 class="mb-0">Productivity Trend</h5>
+                  </div>
+                  <div class="card-body">
+                    <div id="productivity-trend-chart"></div>
                   </div>
                 </div>
               </div>
@@ -435,11 +449,277 @@
     chart.render();
   }
 
+  // Productivity Trend Chart
+  function renderProductivityTrendChart() {
+    const colors = getChartColors();
+    const trendData = @json($productivityTrend);
+    const theme = getCurrentTheme();
+    
+    const dates = trendData.map(item => item.date);
+    const percentages = trendData.map(item => item.percentage);
+    
+    // Determine gradient colors based on theme
+    const gradientFrom = theme === 'dark' ? '#4ade80' : '#28a745';
+    const gradientTo = theme === 'dark' ? '#22c55e' : '#20c997';
+    
+    const options = {
+      series: [{
+        name: 'Productivity',
+        data: percentages
+      }],
+      chart: {
+        type: 'area',
+        height: 380,
+        zoom: {
+          enabled: false
+        },
+        toolbar: {
+          show: false
+        },
+        sparkline: {
+          enabled: false
+        },
+        animations: {
+          enabled: true,
+          easing: 'easeinout',
+          speed: 800,
+          animateGradually: {
+            enabled: true,
+            delay: 150
+          },
+          dynamicAnimation: {
+            enabled: true,
+            speed: 350
+          }
+        }
+      },
+      colors: [gradientFrom],
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.7,
+          opacityTo: 0.3,
+          stops: [0, 50, 100],
+          colorStops: [
+            {
+              offset: 0,
+              color: gradientFrom,
+              opacity: 0.8
+            },
+            {
+              offset: 50,
+              color: gradientTo,
+              opacity: 0.5
+            },
+            {
+              offset: 100,
+              color: gradientTo,
+              opacity: 0.1
+            }
+          ]
+        }
+      },
+      stroke: {
+        curve: 'smooth',
+        width: 3,
+        lineCap: 'round'
+      },
+      markers: {
+        size: 6,
+        strokeWidth: 2,
+        strokeColors: [gradientFrom],
+        fillColors: ['#ffffff'],
+        hover: {
+          size: 8,
+          sizeOffset: 2
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        categories: dates,
+        title: {
+          text: 'Date',
+          style: {
+            fontSize: '12px',
+            fontWeight: 600,
+            color: theme === 'dark' ? '#e0e0e0' : '#666'
+          }
+        },
+        labels: {
+          style: {
+            colors: theme === 'dark' ? '#b0b0b0' : '#666',
+            fontSize: '11px'
+          },
+          rotate: -45,
+          rotateAlways: false
+        },
+        axisBorder: {
+          show: true,
+          color: theme === 'dark' ? '#374151' : '#e5e7eb'
+        },
+        axisTicks: {
+          show: true,
+          color: theme === 'dark' ? '#374151' : '#e5e7eb'
+        }
+      },
+      yaxis: {
+        title: {
+          text: 'Completion Percentage (%)',
+          style: {
+            fontSize: '12px',
+            fontWeight: 600,
+            color: theme === 'dark' ? '#e0e0e0' : '#666'
+          }
+        },
+        min: 0,
+        max: 100,
+        labels: {
+          style: {
+            colors: theme === 'dark' ? '#b0b0b0' : '#666',
+            fontSize: '11px'
+          },
+          formatter: function(val) {
+            return val + '%';
+          }
+        }
+      },
+      grid: {
+        borderColor: theme === 'dark' ? '#374151' : '#e5e7eb',
+        strokeDashArray: 4,
+        xaxis: {
+          lines: {
+            show: true
+          }
+        },
+        yaxis: {
+          lines: {
+            show: true
+          }
+        },
+        row: {
+          colors: [theme === 'dark' ? '#1f2937' : '#f9fafb', 'transparent'],
+          opacity: 0.5
+        },
+        column: {
+          colors: [theme === 'dark' ? '#1f2937' : '#f9fafb', 'transparent'],
+          opacity: 0.5
+        },
+        padding: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
+        }
+      },
+      tooltip: {
+        theme: theme,
+        style: {
+          fontSize: '12px'
+        },
+        y: {
+          formatter: function(val) {
+            return val + "%";
+          },
+          title: {
+            formatter: function() {
+              return 'Productivity: ';
+            }
+          }
+        },
+        marker: {
+          show: true
+        },
+        fixed: {
+          enabled: false
+        },
+        followCursor: true
+      },
+      annotations: {
+        yaxis: [
+          {
+            y: 90,
+            borderColor: theme === 'dark' ? '#4ade80' : '#28a745',
+            borderWidth: 2,
+            borderDashArray: 5,
+            label: {
+              text: 'Excellent (90%)',
+              style: {
+                color: theme === 'dark' ? '#4ade80' : '#28a745',
+                fontSize: '10px',
+                fontWeight: 600,
+                background: 'transparent'
+              },
+              position: 'right'
+            }
+          },
+          {
+            y: 75,
+            borderColor: theme === 'dark' ? '#60a5fa' : '#17a2b8',
+            borderWidth: 1,
+            borderDashArray: 3,
+            label: {
+              text: 'Very Good (75%)',
+              style: {
+                color: theme === 'dark' ? '#60a5fa' : '#17a2b8',
+                fontSize: '10px',
+                fontWeight: 500,
+                background: 'transparent'
+              },
+              position: 'right'
+            }
+          },
+          {
+            y: 60,
+            borderColor: theme === 'dark' ? '#9BB5FF' : '#007bff',
+            borderWidth: 1,
+            borderDashArray: 3,
+            label: {
+              text: 'Good (60%)',
+              style: {
+                color: theme === 'dark' ? '#9BB5FF' : '#007bff',
+                fontSize: '10px',
+                fontWeight: 500,
+                background: 'transparent'
+              },
+              position: 'right'
+            }
+          },
+          {
+            y: 40,
+            borderColor: theme === 'dark' ? '#fbbf24' : '#ffc107',
+            borderWidth: 1,
+            borderDashArray: 3,
+            label: {
+              text: 'Average (40%)',
+              style: {
+                color: theme === 'dark' ? '#fbbf24' : '#ffc107',
+                fontSize: '10px',
+                fontWeight: 500,
+                background: 'transparent'
+              },
+              position: 'right'
+            }
+          }
+        ]
+      },
+      legend: {
+        show: false
+      }
+    };
+    
+    const chart = new ApexCharts(document.querySelector('#productivity-trend-chart'), options);
+    chart.render();
+  }
+
   // Initialize all charts
   document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
       renderStatusChart();
       renderPriorityChart();
+      renderProductivityTrendChart();
     }, 500);
   });
 
